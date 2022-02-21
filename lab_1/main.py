@@ -14,13 +14,25 @@ K = 10
 
 
 def count_every_word(text):
-    return {"hello": 2, "hi": 1}
+    words = text.split()
+    words_amounts = dict()
+
+    for current_word in words:
+        words_amounts[current_word] = words.count(current_word)
+
+    # return {"hello": 2, "hi": 1}
+    return words_amounts
 
 
-inp_text = input("enter some text please: ")
-print("you entered: " + inp_text)
-print("count every word: ")
-words = count_every_word(inp_text)
+def main():
+    inp_text = input("enter some text please: ")
+    print("you entered: " + inp_text)
+    print("count every word: ")
+    words = count_every_word(inp_text)
 
-for w in words:
-    print(w + ": " + str(words[w]) + " times")
+    for w in words:
+        print(w + ": " + str(words[w]) + " times")
+
+
+if __name__ == "__main__":
+    main()
