@@ -1,5 +1,3 @@
-# hello world
-
 """
 На вход поступают текстовые данные. Необходимо посчитать и вывести:
 - сколько раз повторяется каждое слово в указанном тексте
@@ -8,19 +6,20 @@
 - top-K самых часто повторяющихся буквенных N-грам (K и N имеют значения по-умолчанию 10 и 4, но должна быть возможность
 задавать их с клавиатуры).
 """
+import re
 
 N = 4
 K = 10
 
 
 def count_every_word(text):
-    words = text.split()
+    words = re.split("[.,; \t]", text)
+    words = list(filter(None, words))
     words_amounts = dict()
 
     for current_word in words:
         words_amounts[current_word] = words.count(current_word)
 
-    # return {"hello": 2, "hi": 1}
     return words_amounts
 
 
