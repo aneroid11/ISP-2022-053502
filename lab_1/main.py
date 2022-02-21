@@ -12,9 +12,18 @@ N = 4
 K = 10
 
 
-def count_every_word(text):
+def split_into_words(text):
     words = re.split("[.,; \t]", text)
     words = list(filter(None, words))
+    return words
+
+
+def all_words_amount(text):
+    return len(split_into_words(text))
+
+
+def count_every_word(text):
+    words = split_into_words(text)
     words_amounts = dict()
 
     for current_word in words:
@@ -23,14 +32,28 @@ def count_every_word(text):
     return words_amounts
 
 
+def split_into_sentences(text):
+    sentences = re.split("[!.?]", text)
+    sentences = list(filter(None, sentences))
+    return sentences
+
+
+def average_words_in_sentence(text):
+    sentences = split_into_sentences(text)
+
+    return all_words_amount(text) / len(sentences)
+
+
 def main():
     inp_text = input("enter some text please: ")
-    print("you entered: " + inp_text)
-    print("count every word: ")
+    
+    print("\ncount every word: ")
     words = count_every_word(inp_text)
 
     for w in words:
         print(w + ": " + str(words[w]) + " times")
+
+    print("\naverage words in a sentence: " + str(average_words_in_sentence(inp_text)))
 
 
 if __name__ == "__main__":
