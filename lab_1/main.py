@@ -1,7 +1,7 @@
 import re
 
-N = 4
-K = 10
+DEFAULT_N = 4
+DEFAULT_K = 10
 
 
 def split_into_words(text):
@@ -37,10 +37,10 @@ def split_into_sentences(text):
 def average_words_in_sentence(text):
     sentences = split_into_sentences(text)
 
-    print("\nSENTENCES")
+    print("\nALL SENTENCES IN TEXT")
     for curr_sent in sentences:
         print(curr_sent)
-    print("END SENTENCES")
+    print("END")
 
     return all_words_amount(text) / len(sentences)
 
@@ -68,10 +68,32 @@ def median_words_in_sentence(text):
     return get_median(words_amounts)
 
 
+def get_next_n_gram(text: str, index: int):
+    return "abc"
+
+
+def get_n_grams(text: str):
+    n_grams = dict()
+
+    for index in range(0, len(text)):
+        next_n_gram = get_next_n_gram(text, index)
+
+        if next_n_gram in n_grams:
+            n_grams[next_n_gram] += 1
+        else:
+            n_grams[next_n_gram] = 0
+
+    return n_grams
+
+
+def get_top_k_n_grams(text: str, n=DEFAULT_N, k=DEFAULT_K):
+    return {"Lore", "ipsu", "dolo"}
+
+
 def main():
     inp_text = input("enter some text please: ")
 
-    print("\ncount every word: ")
+    print("\n\ncount every word: \n")
     words = count_every_word(inp_text)
 
     for w in words:
@@ -80,6 +102,11 @@ def main():
     print("\naverage words in a sentence: " + str(average_words_in_sentence(inp_text)))
 
     print("\nmedian words in a sentence: " + str(median_words_in_sentence(inp_text)))
+
+    n = 3
+    k = 9
+    print("\ntop " + str(k) + " " + str(n) + "-grams: ")
+    print(get_top_k_n_grams(inp_text, n, k))
 
 
 if __name__ == "__main__":
