@@ -68,13 +68,33 @@ def median_words_in_sentence(text):
     return get_median(words_amounts)
 
 
-def get_next_n_gram(text: str, index: int, n: int):
+"""def get_next_n_gram(text: str, index: int, n: int):
     length = len(text)
 
     if index > length - n:
         return "", 0, False
 
-    return text[index:n+index], index + 1, True
+    return text[index:n+index], index + 1, True"""
+
+
+def get_next_n_gram(text: str, index: int, n: int):
+    length = len(text)
+    curr_n_gram = ""
+
+    while index < length:
+        print("curr_n_gram = " + curr_n_gram)
+        print("index = " + str(index))
+
+        if not text[index].isalpha():
+            curr_n_gram = ""
+        else:
+            curr_n_gram += text[index]
+        index += 1
+
+        if len(curr_n_gram) == n:
+            return curr_n_gram, index - n + 1, True
+
+    return "", 0, False
 
 
 def get_n_grams(text: str, n: int):
