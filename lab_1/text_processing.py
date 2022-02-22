@@ -1,18 +1,26 @@
+"""Contains functions calculating and showing text statistics."""
+
 import re
 import median
 
 
 def split_into_words(text: str):
+    r"""Split text into words.
+
+    Get some text and split it into words by those symbols: '.,; \t'.
+    """
     words = re.split("[.,; \t]", text)
     words = list(filter(None, words))
     return words
 
 
 def all_words_amount(text: str):
+    """Get the number of words in text."""
     return len(split_into_words(text))
 
 
 def count_every_word(text: str):
+    """Get the occurrence frequencies of words in text."""
     words = split_into_words(text)
     words_amounts = dict()
 
@@ -23,22 +31,26 @@ def count_every_word(text: str):
 
 
 def valid_sentence(inp_str: str):
+    """Check if the sentence is not empty or contains only spaces."""
     return inp_str and not inp_str.isspace()
 
 
 def split_into_sentences(text: str):
+    """Split text into sentences and return the list of sentences."""
     sentences = re.split("[!.?]", text)
     sentences = list(filter(valid_sentence, sentences))
     return sentences
 
 
 def average_words_in_sentence(text: str):
+    """Get the average number of words in a sentence in text."""
     sentences = split_into_sentences(text)
 
     return all_words_amount(text) / len(sentences)
 
 
 def median_words_in_sentence(text: str):
+    """Get the median number of words in a sentence in text."""
     sentences = split_into_sentences(text)
     words_amounts = list()
 
@@ -51,6 +63,13 @@ def median_words_in_sentence(text: str):
 
 
 def get_next_n_gram(text: str, index: int, n: int):
+    """Get the next N-gram from text.
+
+    Find and return the next N-gram starting from index. Return:
+    - the N-gram
+    - index after the N-gram
+    - True if found the N-gram, False if not.
+    """
     length = len(text)
     curr_n_gram = ""
 
@@ -68,6 +87,7 @@ def get_next_n_gram(text: str, index: int, n: int):
 
 
 def get_n_grams(text: str, n: int):
+    """Get all N-grams and their frequencies from text."""
     n_grams = dict()
     curr_n_gram, index, result = get_next_n_gram(text, 0, n)
 
@@ -83,6 +103,7 @@ def get_n_grams(text: str, n: int):
 
 
 def get_top_k_n_grams(text: str, n: int, k: int):
+    """Return the top-K N-grams and their frequencies from text."""
     n_grams = get_n_grams(text, n)
     n_grams_len = len(n_grams)
 
