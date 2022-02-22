@@ -113,11 +113,21 @@ def get_n_grams(text: str, n: int):
 
 
 def get_top_k_n_grams(text: str, n=DEFAULT_N, k=DEFAULT_K):
-    return {"Lore", "ipsu", "dolo"}
+    n_grams = get_n_grams(text, n)
+    top_k_n_grams = dict()
+
+    key_of_maximum = max(n_grams, key=n_grams.get)
+    top_k_n_grams[key_of_maximum] = n_grams[key_of_maximum]
+    n_grams.pop(key_of_maximum)
+
+    return top_k_n_grams
 
 
 def main():
     inp_text = input("enter some text please: ")
+
+    while not inp_text:
+        inp_text = input("you did not enter any text. please try again: ")
 
     print("\n\ncount every word: \n")
     words = count_every_word(inp_text)
@@ -132,7 +142,7 @@ def main():
     n = 3
     k = 9
     print("\ntop " + str(k) + " " + str(n) + "-grams: ")
-    print(get_n_grams(inp_text, n))
+    print(get_top_k_n_grams(inp_text, n, k))
 
 
 if __name__ == "__main__":
