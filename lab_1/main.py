@@ -1,20 +1,17 @@
 import re
 
-DEFAULT_N = 4
-DEFAULT_K = 10
 
-
-def split_into_words(text):
+def split_into_words(text: str):
     words = re.split("[.,; \t]", text)
     words = list(filter(None, words))
     return words
 
 
-def all_words_amount(text):
+def all_words_amount(text: str):
     return len(split_into_words(text))
 
 
-def count_every_word(text):
+def count_every_word(text: str):
     words = split_into_words(text)
     words_amounts = dict()
 
@@ -28,19 +25,19 @@ def valid_sentence(inp_str: str):
     return inp_str and not inp_str.isspace()
 
 
-def split_into_sentences(text):
+def split_into_sentences(text: str):
     sentences = re.split("[!.?]", text)
     sentences = list(filter(valid_sentence, sentences))
     return sentences
 
 
-def average_words_in_sentence(text):
+def average_words_in_sentence(text: str):
     sentences = split_into_sentences(text)
 
     return all_words_amount(text) / len(sentences)
 
 
-def get_median(numbers_list):
+def get_median(numbers_list: list):
     size = len(numbers_list)
 
     if size % 2 == 0:
@@ -51,7 +48,7 @@ def get_median(numbers_list):
     return median
 
 
-def median_words_in_sentence(text):
+def median_words_in_sentence(text: str):
     sentences = split_into_sentences(text)
     words_amounts = list()
 
@@ -95,7 +92,7 @@ def get_n_grams(text: str, n: int):
     return n_grams
 
 
-def get_top_k_n_grams(text: str, n=DEFAULT_N, k=DEFAULT_K):
+def get_top_k_n_grams(text: str, n: int, k: int):
     n_grams = get_n_grams(text, n)
     n_grams_len = len(n_grams)
 
@@ -112,11 +109,32 @@ def get_top_k_n_grams(text: str, n=DEFAULT_N, k=DEFAULT_K):
     return top_k_n_grams
 
 
+def get_number(prompt: str, minimum: int, maximum: int):
+    n = input(prompt)
+    while not n.isdigit() or not (minimum <= int(n) <= maximum):
+        print("invalid input. please try again")
+        n = input(prompt)
+
+    return int(n)
+
+
+def get_n_and_k():
+    n = get_number("enter N (the number of symbols in an n-gram, from 1 to 50): ", 1, 50),
+    k = get_number("enter K (the amount of top n-grams you want to get, from 1 to 20): ", 1, 20),
+    return n, k
+
+
 def main():
     inp_text = input("enter some text please: ")
-
     while not inp_text:
         inp_text = input("you did not enter any text. please try again: ")
+
+    choosing_nk = input("do you want to specify N and K yourself (default values are 4 and 10)? (y/n): ")
+    if choosing_nk == 'y':
+        n, k = get_n_and_k()
+    else:
+        n = 4
+        k = 10
 
     print("\n\ncount every word: \n")
     words = count_every_word(inp_text)
@@ -128,8 +146,6 @@ def main():
 
     print("\nmedian words in a sentence: " + str(median_words_in_sentence(inp_text)))
 
-    n = 3
-    k = 9
     print("\ntop " + str(k) + " " + str(n) + "-grams: ")
     print(get_top_k_n_grams(inp_text, n, k))
 
