@@ -39,11 +39,12 @@ def average_words_in_sentence(text: str):
 
 def get_median(numbers_list: list):
     size = len(numbers_list)
+    half_size = int(size / 2)
 
     if size % 2 == 0:
-        median = (numbers_list[int(size / 2)] + numbers_list[int(size / 2) - 1]) / 2
+        median = (numbers_list[half_size] + numbers_list[half_size - 1]) / 2
     else:
-        median = numbers_list[int(size / 2)]
+        median = numbers_list[half_size]
 
     return median
 
@@ -119,8 +120,12 @@ def get_number(prompt: str, minimum: int, maximum: int):
 
 
 def get_n_and_k():
-    n = get_number("enter N (the number of symbols in an n-gram, from 1 to 50): ", 1, 50),
-    k = get_number("enter K (the amount of top n-grams you want to get, from 1 to 20): ", 1, 20),
+    n = get_number("enter N (the number of symbols in an n-gram, "
+                   "from 1 to 50): ",
+                   1, 50)
+    k = get_number("enter K (the amount of top n-grams you want to get, "
+                   "from 1 to 20): ",
+                   1, 20)
     return n, k
 
 
@@ -129,7 +134,8 @@ def main():
     while not inp_text:
         inp_text = input("you did not enter any text. please try again: ")
 
-    choosing_nk = input("do you want to specify N and K yourself (default values are 4 and 10)? (y/n): ")
+    choosing_nk = input("do you want to specify N and K yourself "
+                        "(default values are 4 and 10)? (y/n): ")
     if choosing_nk == 'y':
         n, k = get_n_and_k()
     else:
@@ -142,9 +148,11 @@ def main():
     for w in words:
         print(w + ": " + str(words[w]) + " times")
 
-    print("\naverage words in a sentence: " + str(average_words_in_sentence(inp_text)))
+    print("\naverage words in a sentence: " +
+          str(average_words_in_sentence(inp_text)))
 
-    print("\nmedian words in a sentence: " + str(median_words_in_sentence(inp_text)))
+    print("\nmedian words in a sentence: " +
+          str(median_words_in_sentence(inp_text)))
 
     print("\ntop " + str(k) + " " + str(n) + "-grams: ")
     print(get_top_k_n_grams(inp_text, n, k))
