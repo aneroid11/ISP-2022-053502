@@ -37,11 +37,6 @@ def split_into_sentences(text):
 def average_words_in_sentence(text):
     sentences = split_into_sentences(text)
 
-    print("\nALL SENTENCES IN TEXT")
-    for curr_sent in sentences:
-        print(curr_sent)
-    print("END")
-
     return all_words_amount(text) / len(sentences)
 
 
@@ -68,23 +63,11 @@ def median_words_in_sentence(text):
     return get_median(words_amounts)
 
 
-"""def get_next_n_gram(text: str, index: int, n: int):
-    length = len(text)
-
-    if index > length - n:
-        return "", 0, False
-
-    return text[index:n+index], index + 1, True"""
-
-
 def get_next_n_gram(text: str, index: int, n: int):
     length = len(text)
     curr_n_gram = ""
 
     while index < length:
-        print("curr_n_gram = " + curr_n_gram)
-        print("index = " + str(index))
-
         if not text[index].isalpha():
             curr_n_gram = ""
         else:
@@ -114,11 +97,17 @@ def get_n_grams(text: str, n: int):
 
 def get_top_k_n_grams(text: str, n=DEFAULT_N, k=DEFAULT_K):
     n_grams = get_n_grams(text, n)
+    n_grams_len = len(n_grams)
+
+    if n_grams_len < k:
+        k = n_grams_len
+
     top_k_n_grams = dict()
 
-    key_of_maximum = max(n_grams, key=n_grams.get)
-    top_k_n_grams[key_of_maximum] = n_grams[key_of_maximum]
-    n_grams.pop(key_of_maximum)
+    for i in range(0, k):
+        key_of_maximum = max(n_grams, key=n_grams.get)
+        top_k_n_grams[key_of_maximum] = n_grams[key_of_maximum]
+        n_grams.pop(key_of_maximum)
 
     return top_k_n_grams
 
