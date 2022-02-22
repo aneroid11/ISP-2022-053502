@@ -1,4 +1,12 @@
+"""Functions to validate user input."""
+
+
 def get_number(prompt: str, minimum: int, maximum: int):
+    """Get a number from user.
+
+    Show prompt, get a number from user and make sure it is valid (a number
+    from minimum to maximum).
+    """
     n = input(prompt)
     while not n.isdigit() or not (minimum <= int(n) <= maximum):
         print("invalid input. please try again")
@@ -8,6 +16,7 @@ def get_number(prompt: str, minimum: int, maximum: int):
 
 
 def get_n_and_k():
+    """Get N and K from user."""
     n = get_number("enter N (the number of symbols in an n-gram, "
                    "from 1 to 50): ",
                    1, 50)
