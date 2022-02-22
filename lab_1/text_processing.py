@@ -1,4 +1,5 @@
 import re
+import median
 
 
 def split_into_words(text: str):
@@ -37,18 +38,6 @@ def average_words_in_sentence(text: str):
     return all_words_amount(text) / len(sentences)
 
 
-def get_median(numbers_list: list):
-    size = len(numbers_list)
-    half_size = int(size / 2)
-
-    if size % 2 == 0:
-        median = (numbers_list[half_size] + numbers_list[half_size - 1]) / 2
-    else:
-        median = numbers_list[half_size]
-
-    return median
-
-
 def median_words_in_sentence(text: str):
     sentences = split_into_sentences(text)
     words_amounts = list()
@@ -58,7 +47,7 @@ def median_words_in_sentence(text: str):
 
     words_amounts.sort()
 
-    return get_median(words_amounts)
+    return median.get_median(words_amounts)
 
 
 def get_next_n_gram(text: str, index: int, n: int):
