@@ -1,8 +1,11 @@
+"""Main module - does some processing of text."""
+
 import text_processing
 import user_input
 
 
 def main():
+    """Get some text from the user and show some statistics about it."""
     inp_text = input("enter some text please: ")
     while not inp_text:
         inp_text = input("you did not enter any text. please try again: ")
