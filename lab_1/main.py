@@ -68,16 +68,18 @@ def median_words_in_sentence(text):
     return get_median(words_amounts)
 
 
-def get_next_n_gram(text: str, index: int):
-    if index > 100:
+def get_next_n_gram(text: str, index: int, n: int):
+    length = len(text)
+
+    if index > length - n:
         return "", 0, False
 
-    return "abc", index + 1, True
+    return text[index:n+index], index + 1, True
 
 
-def get_n_grams(text: str):
+def get_n_grams(text: str, n: int):
     n_grams = dict()
-    curr_n_gram, index, result = get_next_n_gram(text, 0)
+    curr_n_gram, index, result = get_next_n_gram(text, 0, n)
 
     while result:
         if curr_n_gram in n_grams:
@@ -85,17 +87,13 @@ def get_n_grams(text: str):
         else:
             n_grams[curr_n_gram] = 1
 
-        curr_n_gram, index, result = get_next_n_gram(text, index)
+        curr_n_gram, index, result = get_next_n_gram(text, index, n)
 
     return n_grams
 
 
 def get_top_k_n_grams(text: str, n=DEFAULT_N, k=DEFAULT_K):
     return {"Lore", "ipsu", "dolo"}
-
-
-def pass_by_ref(inp: int):
-    inp = 5
 
 
 def main():
@@ -114,12 +112,7 @@ def main():
     n = 3
     k = 9
     print("\ntop " + str(k) + " " + str(n) + "-grams: ")
-    # print(get_top_k_n_grams(inp_text, n, k))
-    print(get_n_grams(inp_text))
-
-    variable = 10
-    pass_by_ref(variable)
-    print(variable)
+    print(get_n_grams(inp_text, n))
 
 
 if __name__ == "__main__":
