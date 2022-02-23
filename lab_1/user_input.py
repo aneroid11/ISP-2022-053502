@@ -1,7 +1,7 @@
 """Functions to validate user input."""
 
 
-def get_number(prompt: str, minimum: int, maximum: int):
+def get_number(prompt: str, minimum: int, maximum: int) -> int:
     """Get a number from user.
 
     Show prompt, get a number from user and make sure it is valid (a number
@@ -15,7 +15,7 @@ def get_number(prompt: str, minimum: int, maximum: int):
     return int(n)
 
 
-def get_n_and_k():
+def get_n_and_k() -> (int, int):
     """Get N and K from user."""
     n = get_number("enter N (the number of symbols in an n-gram, "
                    "from 1 to 50): ",

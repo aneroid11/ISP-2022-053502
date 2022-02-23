@@ -1,10 +1,11 @@
 """Contains functions calculating and showing text statistics."""
 
 import re
+
 import median
 
 
-def split_into_words(text: str):
+def split_into_words(text: str) -> list:
     r"""Split text into words.
 
     Get some text and split it into words by those symbols: '.,; \t'.
@@ -14,12 +15,12 @@ def split_into_words(text: str):
     return words
 
 
-def all_words_amount(text: str):
+def all_words_amount(text: str) -> int:
     """Get the number of words in text."""
     return len(split_into_words(text))
 
 
-def count_every_word(text: str):
+def count_every_word(text: str) -> dict:
     """Get the occurrence frequencies of words in text."""
     words = split_into_words(text)
     words_amounts = dict()
@@ -30,26 +31,26 @@ def count_every_word(text: str):
     return words_amounts
 
 
-def valid_sentence(inp_str: str):
+def valid_sentence(inp_str: str) -> bool:
     """Check if the sentence is not empty or contains only spaces."""
     return inp_str and not inp_str.isspace()
 
 
-def split_into_sentences(text: str):
+def split_into_sentences(text: str) -> list:
     """Split text into sentences and return the list of sentences."""
     sentences = re.split("[!.?]", text)
     sentences = list(filter(valid_sentence, sentences))
     return sentences
 
 
-def average_words_in_sentence(text: str):
+def average_words_in_sentence(text: str) -> float:
     """Get the average number of words in a sentence in text."""
     sentences = split_into_sentences(text)
 
     return all_words_amount(text) / len(sentences)
 
 
-def median_words_in_sentence(text: str):
+def median_words_in_sentence(text: str) -> float:
     """Get the median number of words in a sentence in text."""
     sentences = split_into_sentences(text)
     words_amounts = list()
@@ -62,7 +63,7 @@ def median_words_in_sentence(text: str):
     return median.get_median(words_amounts)
 
 
-def get_next_n_gram(text: str, index: int, n: int):
+def get_next_n_gram(text: str, index: int, n: int) -> (str, int, bool):
     """Get the next N-gram from text.
 
     Find and return the next N-gram starting from index. Return:
@@ -86,7 +87,7 @@ def get_next_n_gram(text: str, index: int, n: int):
     return "", 0, False
 
 
-def get_n_grams(text: str, n: int):
+def get_n_grams(text: str, n: int) -> dict:
     """Get all N-grams and their frequencies from text."""
     n_grams = dict()
     curr_n_gram, index, result = get_next_n_gram(text, 0, n)
@@ -102,7 +103,7 @@ def get_n_grams(text: str, n: int):
     return n_grams
 
 
-def get_top_k_n_grams(text: str, n: int, k: int):
+def get_top_k_n_grams(text: str, n: int, k: int) -> dict:
     """Return the top-K N-grams and their frequencies from text."""
     n_grams = get_n_grams(text, n)
     n_grams_len = len(n_grams)
