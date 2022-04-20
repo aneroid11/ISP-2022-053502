@@ -1,8 +1,8 @@
-from abstract_serializer import AbstractSerializer
+from json_serializer import JSONSerializer
 
 
 def main():
-    a = AbstractSerializer()
+    a = JSONSerializer()
     encoded = a.dumps("hello world")
 
     print(a.loads(encoded))
