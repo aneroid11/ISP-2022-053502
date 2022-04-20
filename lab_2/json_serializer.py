@@ -1,15 +1,20 @@
+import json
+from io import FileIO
 from abstract_serializer import AbstractSerializer
 
 
 class JSONSerializer(AbstractSerializer):
-    def dumps(self, obj) -> str:
-        return "jsonjsonjsonjson"
+    def dumps(self, obj: object) -> str:
+        return json.dumps(obj)
 
-    def loads(self, string) -> object:
-        return int(5555555555555284329895932859968938592436982396829385928394589235893892893842959)
+    def loads(self, string: str) -> object:
+        return json.loads(string)
 
-    def dump(self, obj, fp):
-        print("dump(obj, fp)")
+    def dump(self, obj: object, fp: FileIO):
+        # fp is a file descriptor, not file name
+        text_to_write = self.dumps(obj)
+        fp.write(text_to_write)
 
-    def load(self, fp) -> object:
-        return int(22305692049306823096093206932095029604329069309240590)
+    def load(self, fp: FileIO) -> object:
+        data_string = str(fp.read())
+        return self.loads(data_string)

@@ -5,7 +5,13 @@ def main():
     a = JSONSerializer()
     encoded = a.dumps("hello world")
 
-    print(a.loads(encoded))
+    fp = open("serialized_object.json", "w")
+    a.dump("hello world", fp)
+    fp.close()
+
+    fp = open("serialized_object.json", "r")
+    print(a.load(fp))
+    fp.close()
 
 
 if __name__ == '__main__':
