@@ -24,7 +24,13 @@ class JSONSerializer(AbstractSerializer):
         return dumped
 
     def loads(self, string: str) -> object:
-        return json.loads(string)
+        decoded_object = json.loads(string)
+
+        if isinstance(decoded_object, dict):
+            if "py/function" in decoded_object:
+                return load_function(decoded_object)
+
+        return decoded_object
 
     def dump(self, obj: object, fp: FileIO):
         # fp is a file descriptor, not file name
@@ -104,3 +110,10 @@ def dump_function(func) -> str:
 
     ret_str += '}\n'
     return ret_str
+
+
+def load_function(info: dict):
+    def do_something():
+        print("something loaded")
+
+    return do_something

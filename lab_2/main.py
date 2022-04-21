@@ -57,6 +57,7 @@ def main():
     print("Decoded object: ")
     print("type: " + str(type(decoded)))
     print("object: " + str(decoded))
+    decoded()
 
 
 if __name__ == '__main__':
