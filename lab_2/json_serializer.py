@@ -1,18 +1,25 @@
-import json
+from typing import Tuple
 from io import FileIO
 from abstract_serializer import AbstractSerializer
+import json
+import inspect
 
 
 class JSONSerializer(AbstractSerializer):
-    def __dump_class(self, obj: object) -> str:
-        return '"hello world"'
-
     def dumps(self, obj: object) -> str:
         try:
             dumped = json.dumps(obj)
         except TypeError:
             # this is not a simple type. we need a title for the dict
-            dumped = self.__dump_class(obj)
+            # if this is a class
+            tp = str(obj.__class__)
+
+            if tp == "<class 'type'>":
+                dumped = dump_class(obj)
+            elif tp == "<class 'function'>":
+                dumped = dump_function(obj)
+            else:
+                dumped = dump_object(obj)
 
         return dumped
 
@@ -27,3 +34,50 @@ class JSONSerializer(AbstractSerializer):
     def load(self, fp: FileIO) -> object:
         data_string = str(fp.read())
         return self.loads(data_string)
+
+
+def get_class_name(cls: object) -> str:
+    return cls.__module__ + '.' + cls.__name__
+
+
+def dump_class(cls: object) -> str:
+    ret_str = str()
+    ret_str += '{'
+    ret_str += '}'
+    return ret_str
+
+
+def dump_object(obj: object) -> str:
+    ret_str = str()
+    ret_str += '{'
+    ret_str += '}'
+    return ret_str
+
+
+def dump_func_code_info(member_list: list) -> str:
+    ret = "{"
+    ret += "}"
+    return ret
+
+
+def is_code_member(mem: Tuple[str, ]):
+    return mem[0].startswith("co_")
+
+
+def dump_function(func) -> str:
+    ret_str = str()
+    ret_str += '{\n'
+    ret_str += '"py/function": '
+    ret_str += '"' + func.__module__ + "." + func.__name__ + '"'
+
+    member_list = inspect.getmembers(func.__code__)
+    for mem in member_list:
+        if mem[0].startswith('co_'):
+            print(mem)
+
+    ret_str += ",\n"
+    ret_str += '"code_info": '
+    ret_str += dump_func_code_info(member_list)
+
+    ret_str += '}\n'
+    return ret_str
