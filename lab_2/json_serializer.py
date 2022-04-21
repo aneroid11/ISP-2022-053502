@@ -4,8 +4,17 @@ from abstract_serializer import AbstractSerializer
 
 
 class JSONSerializer(AbstractSerializer):
+    def __dump_class(self, obj: object) -> str:
+        return '"hello world"'
+
     def dumps(self, obj: object) -> str:
-        return json.dumps(obj)
+        try:
+            dumped = json.dumps(obj)
+        except TypeError:
+            # this is not a simple type. we need a title for the dict
+            dumped = self.__dump_class(obj)
+
+        return dumped
 
     def loads(self, string: str) -> object:
         return json.loads(string)
