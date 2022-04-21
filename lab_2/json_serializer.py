@@ -55,8 +55,27 @@ def dump_object(obj: object) -> str:
 
 
 def dump_func_code_info(member_list: list) -> str:
-    ret = "{"
-    ret += "}"
+    ret = "{\n"
+
+    length = len(member_list)
+
+    for i in range(0, length):
+        member = member_list[i]
+        key = member[0]
+        value = member[1]
+        ret += f'"{key}": '
+
+        if isinstance(value, bytes):
+            ret += f'"{value.hex()}"'
+        else:
+            ret += json.dumps(value)
+
+        if i == length - 1:
+            ret += "\n"
+        else:
+            ret += ",\n"
+
+    ret += "}\n"
     return ret
 
 
@@ -71,9 +90,17 @@ def dump_function(func) -> str:
     for mem in member_list:
         print(mem)
 
+        if mem[0] == "co_code":
+            cd = mem[1]
+            print(cd)
+            hex_str = cd.hex()
+            print(hex_str)
+            cd = bytes.fromhex(hex_str)
+            print(cd)
+
     ret_str += ",\n"
-    ret_str += '"code_info": '
-    ret_str += dump_func_code_info(member_list) + "\n"
+    ret_str += '"code_info": \n'
+    ret_str += dump_func_code_info(member_list)
 
     ret_str += '}\n'
     return ret_str
