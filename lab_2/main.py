@@ -1,6 +1,5 @@
 from json_serializer import JSONSerializer
 
-import jsonpickle
 
 class MyClass:
     def __init__(self):
@@ -47,11 +46,6 @@ def main():
 
     print_class_members()
     """
-    encoded = jsonpickle.encode(hello_world)
-    print(jsonpickle.encode(hello_world))
-    jsonpickle.decode(encoded)()
-
-    print("\n\n\n\n------------------------------------\n\n\n\n\n")
 
     a = JSONSerializer()
     # encoded = a.dumps(MyClass)
