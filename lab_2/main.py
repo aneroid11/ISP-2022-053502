@@ -38,15 +38,37 @@ def print_class_members():
         print(mtd)
 
 
+import types
+
+
+def test_function_creating():
+    def y():
+        print("hello world")
+
+    argcount = 0
+    name = "func_name"
+    y_code = types.CodeType(argcount,
+                            y.__code__.co_posonlyargcount,
+                            y.__code__.co_kwonlyargcount,
+                            y.__code__.co_nlocals,
+                            y.__code__.co_stacksize,
+                            y.__code__.co_flags,
+                            y.__code__.co_code,
+                            y.__code__.co_consts,
+                            y.__code__.co_names,
+                            y.__code__.co_varnames,
+                            y.__code__.co_filename,
+                            name,
+                            y.__code__.co_firstlineno,
+                            y.__code__.co_lnotab,
+                            y.__code__.co_freevars,
+                            y.__code__.co_cellvars)
+
+    func = types.FunctionType(y_code, y.__globals__, name)
+    func()
+
+
 def main():
-    """
-    print_class_for_class_func_and_object()
-    print()
-    print_docs_for_class_object()
-
-    print_class_members()
-    """
-
     a = JSONSerializer()
     # encoded = a.dumps(MyClass)
     encoded = a.dumps(hello_world)
@@ -54,10 +76,11 @@ def main():
 
     decoded = a.loads(encoded)
 
-    print("Decoded object: ")
+    """print("Decoded object: ")
     print("type: " + str(type(decoded)))
     print("object: " + str(decoded))
-    decoded()
+    decoded()"""
+    # test_function_creating()
 
 
 if __name__ == '__main__':

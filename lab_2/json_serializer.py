@@ -1,8 +1,8 @@
-from typing import Tuple
 from io import FileIO
 from abstract_serializer import AbstractSerializer
 import json
 import inspect
+import types
 
 
 class JSONSerializer(AbstractSerializer):
@@ -113,7 +113,17 @@ def dump_function(func) -> str:
 
 
 def load_function(info: dict):
+    # to start with - just co_code
+    func_info = {}
+    keys = info["code_info"].keys()
+    func_info["py/function"] = info["py/function"]
+    func_info["code_info"] = {}
+
+    for key in keys:
+        value = bytes.fromhex(info["code_info"][key]) if key == "co_code" else info["code_info"][key]
+        func_info["code_info"][key] = value
+
     def do_something():
-        print("something loaded")
+        print(func_info)
 
     return do_something
