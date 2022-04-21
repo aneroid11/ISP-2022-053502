@@ -50,7 +50,7 @@ def main():
     a = JSONSerializer()
     # encoded = a.dumps(MyClass)
     encoded = a.dumps(hello_world)
-    print("Encoded object string: " + encoded)
+    print("Encoded object string:\n" + encoded)
 
     decoded = a.loads(encoded)
 

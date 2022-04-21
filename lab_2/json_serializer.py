@@ -60,10 +60,6 @@ def dump_func_code_info(member_list: list) -> str:
     return ret
 
 
-def is_code_member(mem: Tuple[str, ]) -> bool:
-    return mem[0].startswith("co_")
-
-
 def dump_function(func) -> str:
     ret_str = str()
     ret_str += '{\n'
@@ -71,13 +67,13 @@ def dump_function(func) -> str:
     ret_str += '"' + func.__module__ + "." + func.__name__ + '"'
 
     all_members = inspect.getmembers(func.__code__)
-    member_list = list(filter(is_code_member, all_members))
+    member_list = list(filter(lambda member: member[0].startswith("co_"), all_members))
     for mem in member_list:
         print(mem)
 
     ret_str += ",\n"
     ret_str += '"code_info": '
-    ret_str += dump_func_code_info(member_list)
+    ret_str += dump_func_code_info(member_list) + "\n"
 
     ret_str += '}\n'
     return ret_str
