@@ -1,4 +1,9 @@
+import json
+import math
+import modulefinder
+
 from json_serializer import JSONSerializer
+import types
 
 
 class MyClass:
@@ -15,6 +20,14 @@ class MyClass:
 
 def hello_world():
     print("hello world")
+
+
+c = 42
+
+
+def main_test_function(x):
+    a = 123
+    return math.sin(x * a * c)
 
 
 def print_class_for_class_func_and_object():
@@ -38,16 +51,12 @@ def print_class_members():
         print(mtd)
 
 
-import types
-
-
 def test_function_creating():
     def y():
         print("hello world")
 
-    argcount = 0
-    name = "func_name"
-    y_code = types.CodeType(argcount,
+    # name = "func_name"
+    y_code = types.CodeType(y.__code__.co_argcount,
                             y.__code__.co_posonlyargcount,
                             y.__code__.co_kwonlyargcount,
                             y.__code__.co_nlocals,
@@ -58,13 +67,17 @@ def test_function_creating():
                             y.__code__.co_names,
                             y.__code__.co_varnames,
                             y.__code__.co_filename,
-                            name,
+                            y.__code__.co_name,
                             y.__code__.co_firstlineno,
                             y.__code__.co_lnotab,
                             y.__code__.co_freevars,
                             y.__code__.co_cellvars)
 
-    func = types.FunctionType(y_code, y.__globals__, name)
+    # func = types.FunctionType(y_code, y.__globals__, name)
+    func = types.FunctionType(y_code, y.__globals__)
+    print(func.__class__)
+    print(func.__name__)
+    print(func.__module__)
     func()
 
 
@@ -74,13 +87,22 @@ def main():
     encoded = a.dumps(hello_world)
     print("Encoded object string:\n" + encoded)
 
-    decoded = a.loads(encoded)
+    """decoded = a.loads(encoded)
 
-    """print("Decoded object: ")
+    print("Decoded object: ")
     print("type: " + str(type(decoded)))
     print("object: " + str(decoded))
     decoded()"""
-    # test_function_creating()
+
+    # print(json.dumps(hello_world.__globals__))
+    test_function_creating()
+    print(vars(modulefinder.Module("__main__")))
+
+    keys = hello_world.__globals__.keys()
+
+    print("\n__globals__\n")
+    for key in keys:
+        print(key + ":", hello_world.__globals__[key])
 
 
 if __name__ == '__main__':

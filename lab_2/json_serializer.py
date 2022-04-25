@@ -93,18 +93,13 @@ def dump_function(func) -> str:
 
     all_members = inspect.getmembers(func.__code__)
     member_list = list(filter(lambda member: member[0].startswith("co_"), all_members))
-    for mem in member_list:
-        print(mem)
-
-        if mem[0] == "co_code":
-            cd = mem[1]
-            print(cd)
-            hex_str = cd.hex()
-            print(hex_str)
-            cd = bytes.fromhex(hex_str)
-            print(cd)
 
     ret_str += ",\n"
+
+    ret_str += '"__globals__": \n'
+    ret_str += "{\n"
+    ret_str += "},\n"
+
     ret_str += '"code_info": \n'
     ret_str += dump_func_code_info(member_list)
 
