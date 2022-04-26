@@ -19,17 +19,26 @@ class MyClass:
         print("z = " + str(self.z))
 
 
+c = 42
+
+
 def hello_world():
-    print(2+2)
+    print("start hello_world()")
+
+    a = {"a": 3, "b": 2}
+    serialized_a = json.dumps(a)
+    print(serialized_a)
+
+    print("end hello_world()")
+
+    """print(2+2)
     a = 55
     b = 333
     print(a * b)
     print("hello world")
     print("this sample function finished its work")
     print("goodbye")
-
-
-c = 42
+    print(math.sin(2*math.pi))"""
 
 
 def main_test_function(x):

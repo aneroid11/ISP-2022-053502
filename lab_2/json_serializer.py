@@ -1,3 +1,4 @@
+import typing
 from typing import TextIO
 from abstract_serializer import AbstractSerializer
 import json
@@ -74,6 +75,7 @@ def dump_func_code_info(member_list: list) -> str:
         if isinstance(value, bytes):
             ret += f'"{value.hex()}"'
         else:
+            print(key, ":", value)
             ret += json.dumps(value)
 
         if i == length - 1:
@@ -83,6 +85,18 @@ def dump_func_code_info(member_list: list) -> str:
 
     ret += "}\n"
     return ret
+
+
+def get_func_globals(func: types.FunctionType) -> dict:
+    func_globs = func.__globals__
+    needed_globs = func.__code__.co_names
+    ret_globs = {}
+
+    for glob in needed_globs:
+        if glob in func_globs:
+            ret_globs[glob] = func_globs[glob]
+
+    return ret_globs
 
 
 def dump_function(func) -> str:
@@ -96,17 +110,51 @@ def dump_function(func) -> str:
 
     ret_str += ",\n"
 
-    """
-    ret_str += '"__globals__": \n'
-    ret_str += "{\n"
-    ret_str += "},\n"
-    """
+    func_globs = get_func_globals(func)
+    ret_str += '"__globals__": '
+
+    for glob_name in func_globs:
+        if isinstance(func_globs[glob_name], types.ModuleType):
+            func_globs[glob_name] = "__module_name__"
+
+    ret_str += json.dumps(func_globs)
+    ret_str += ",\n"
 
     ret_str += '"__code__": \n'
     ret_str += dump_func_code_info(member_list)
 
     ret_str += '}\n'
     return ret_str
+
+
+def load_func_globals(info: dict) -> dict:
+    if "__globals__" not in info:
+        return globals()
+
+    ret_globs = globals()
+    additional_globs = info["__globals__"]
+
+    for glob_name in additional_globs:
+        curr_glob = additional_globs[glob_name]
+
+        if isinstance(curr_glob, str) and curr_glob == "__module_name__":
+            # glob_name is the name for a module
+            additional_globs[glob_name] = __import__(glob_name)
+
+    for glob_name in additional_globs:
+        ret_globs[glob_name] = additional_globs[glob_name]
+
+    return ret_globs
+
+
+def list_to_tuple_recursive(lst: list) -> typing.Tuple:
+    size = len(lst)
+
+    for i in range(size):
+        if isinstance(lst[i], list):
+            lst[i] = list_to_tuple_recursive(lst[i])
+
+    return tuple(lst)
 
 
 def load_function(info: dict):
@@ -123,7 +171,9 @@ def load_function(info: dict):
 
         # all lists must be transformed into tuples here
         if isinstance(value, list):
-            value = tuple(value)
+            # value = tuple(value)
+            value = list_to_tuple_recursive(value)
+            print(value)
 
         func_info["__code__"][key] = value
 
@@ -144,11 +194,15 @@ def load_function(info: dict):
                                func_info["__code__"]["co_freevars"],
                                func_info["__code__"]["co_cellvars"])
 
-    func_globs = globals()
-    if "__globals__" in func_info.keys():
+    func_globs = load_func_globals(info)
+    """if "__globals__" in func_info.keys():
         # func_globs = globals()
         # do something
-        pass
+        additional_globs = func_info["__globals__"]
+        keys = additional_globs.keys()
+
+        for key in keys:
+            func_globs[key] = additional_globs[key]"""
 
     func = types.FunctionType(func_code, func_globs)
 
