@@ -127,9 +127,6 @@ def load_function(info: dict):
 
         func_info["__code__"][key] = value
 
-    """def do_something():
-        print(func_info)"""
-
     func_code = types.CodeType(func_info["__code__"]["co_argcount"],
                                func_info["__code__"]["co_posonlyargcount"],
                                func_info["__code__"]["co_kwonlyargcount"],
@@ -147,9 +144,11 @@ def load_function(info: dict):
                                func_info["__code__"]["co_freevars"],
                                func_info["__code__"]["co_cellvars"])
 
-    func_globs = {}
-    if "__globals__" not in func_info.keys():
-        func_globs = globals()
+    func_globs = globals()
+    if "__globals__" in func_info.keys():
+        # func_globs = globals()
+        # do something
+        pass
 
     func = types.FunctionType(func_code, func_globs)
 

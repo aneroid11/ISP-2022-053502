@@ -20,7 +20,13 @@ class MyClass:
 
 
 def hello_world():
+    print(2+2)
+    a = 55
+    b = 333
+    print(a * b)
     print("hello world")
+    print("this sample function finished its work")
+    print("goodbye")
 
 
 c = 42
