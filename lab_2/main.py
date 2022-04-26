@@ -28,6 +28,7 @@ def hello_world():
     a = {"a": 3, "b": 2}
     serialized_a = json.dumps(a)
     print(serialized_a)
+    print(math.sin(c))
 
     print("end hello_world()")
 
