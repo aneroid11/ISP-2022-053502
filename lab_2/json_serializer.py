@@ -96,9 +96,11 @@ def dump_function(func) -> str:
 
     ret_str += ",\n"
 
+    """
     ret_str += '"__globals__": \n'
     ret_str += "{\n"
     ret_str += "},\n"
+    """
 
     ret_str += '"code_info": \n'
     ret_str += dump_func_code_info(member_list)

@@ -1,7 +1,7 @@
 import json
 import math
-import modulefinder
-
+import dis
+import dill
 from json_serializer import JSONSerializer
 import types
 
@@ -51,8 +51,21 @@ def print_class_members():
         print(mtd)
 
 
+def get_globals_to_save(func) -> dict:
+    func_names = func.__code__.co_names
+    func_globs = func.__globals__
+    ret_globs = {}
+
+    for name in func_names:
+        if name in func_globs:
+            ret_globs[name] = func_globs[name]
+
+    return ret_globs
+
+
 def test_function_creating():
     def y():
+        print(math.sin(2 * math.pi))
         print("hello world")
 
     # name = "func_name"
@@ -73,11 +86,20 @@ def test_function_creating():
                             y.__code__.co_freevars,
                             y.__code__.co_cellvars)
 
+    print(get_globals_to_save(y))
+
     # func = types.FunctionType(y_code, y.__globals__, name)
-    func = types.FunctionType(y_code, y.__globals__)
-    print(func.__class__)
+    # func = types.FunctionType(y_code, y.__globals__)
+    # func = types.FunctionType(y_code, globals())
+    globs = y.__globals__
+    func = types.FunctionType(y_code, globs)
+    # my_globals = dict()
+    # func = types.FunctionType(y_code, my_globals)
+    """print(func.__class__)
     print(func.__name__)
-    print(func.__module__)
+    print(func.__module__)"""
+    # print(func.__module__)
+
     func()
 
 
@@ -94,15 +116,21 @@ def main():
     print("object: " + str(decoded))
     decoded()"""
 
-    # print(json.dumps(hello_world.__globals__))
     test_function_creating()
-    print(vars(modulefinder.Module("__main__")))
 
-    keys = hello_world.__globals__.keys()
+    mth = math
+    print(mth.sin(2*mth.pi))
+    # mod = types.ModuleType("math")
+    mod = __import__("math")
+    print(mod.sin(2 * mod.pi))
+    # print(mod.sin())
+
+    """keys = hello_world.__globals__.keys()
 
     print("\n__globals__\n")
     for key in keys:
         print(key + ":", hello_world.__globals__[key])
+        print("the type of __globals__[key]:", type(hello_world.__globals__[key]))"""
 
 
 if __name__ == '__main__':
