@@ -4,6 +4,7 @@ import dis
 import dill
 from json_serializer import JSONSerializer
 import types
+import jsonpickle
 
 
 class MyClass:
@@ -112,27 +113,7 @@ def main():
     serializer.dump(hello_world, out_file)
     out_file.close()
 
-    """decoded = a.loads(encoded)
-
-    print("Decoded object: ")
-    print("type: " + str(type(decoded)))
-    print("object: " + str(decoded))
-    decoded()"""
-
-    """test_function_creating()
-
-    mth = math
-    print(mth.sin(2*mth.pi))
-    # mod = types.ModuleType("math")
-    mod = __import__("math")
-    print(mod.sin(2 * mod.pi))"""
-
-    """keys = hello_world.__globals__.keys()
-
-    print("\n__globals__\n")
-    for key in keys:
-        print(key + ":", hello_world.__globals__[key])
-        print("the type of __globals__[key]:", type(hello_world.__globals__[key]))"""
+    # print(jsonpickle.dumps(hello_world))
 
 
 if __name__ == '__main__':

@@ -110,17 +110,47 @@ def dump_function(func) -> str:
 
 
 def load_function(info: dict):
-    # to start with - just co_code
     func_info = {}
-    keys = info["code_info"].keys()
+    keys = info["__code__"].keys()
     func_info["py/function"] = info["py/function"]
-    func_info["code_info"] = {}
+    func_info["__code__"] = {}
 
     for key in keys:
-        value = bytes.fromhex(info["code_info"][key]) if key == "co_code" else info["code_info"][key]
-        func_info["code_info"][key] = value
+        if key == "co_code" or key == "co_lnotab":
+            value = bytes.fromhex(info["__code__"][key])
+        else:
+            value = info["__code__"][key]
 
-    def do_something():
-        print(func_info)
+        # all lists must be transformed into tuples here
+        if isinstance(value, list):
+            value = tuple(value)
 
-    return do_something
+        func_info["__code__"][key] = value
+
+    """def do_something():
+        print(func_info)"""
+
+    func_code = types.CodeType(func_info["__code__"]["co_argcount"],
+                               func_info["__code__"]["co_posonlyargcount"],
+                               func_info["__code__"]["co_kwonlyargcount"],
+                               func_info["__code__"]["co_nlocals"],
+                               func_info["__code__"]["co_stacksize"],
+                               func_info["__code__"]["co_flags"],
+                               func_info["__code__"]["co_code"],
+                               func_info["__code__"]["co_consts"],
+                               func_info["__code__"]["co_names"],
+                               func_info["__code__"]["co_varnames"],
+                               func_info["__code__"]["co_filename"],
+                               func_info["__code__"]["co_name"],
+                               func_info["__code__"]["co_firstlineno"],
+                               func_info["__code__"]["co_lnotab"],
+                               func_info["__code__"]["co_freevars"],
+                               func_info["__code__"]["co_cellvars"])
+
+    func_globs = {}
+    if "__globals__" not in func_info.keys():
+        func_globs = globals()
+
+    func = types.FunctionType(func_code, func_globs)
+
+    return func
