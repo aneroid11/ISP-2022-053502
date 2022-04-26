@@ -123,10 +123,11 @@ def test_function_creating():
 def main():
     serializer = JSONSerializer()
     # encoded = a.dumps(MyClass)
-    encoded = serializer.dumps(hello_world)
+    # encoded = serializer.dumps(hello_world)
+    encoded = serializer.dumps(main_test_function)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
-    serializer.dump(hello_world, out_file)
+    serializer.dump(main_test_function, out_file)
     out_file.close()
 
     # print(jsonpickle.dumps(hello_world))
