@@ -1,4 +1,4 @@
-from io import FileIO
+from typing import TextIO
 from abstract_serializer import AbstractSerializer
 import json
 import inspect
@@ -32,12 +32,12 @@ class JSONSerializer(AbstractSerializer):
 
         return decoded_object
 
-    def dump(self, obj: object, fp: FileIO):
+    def dump(self, obj: object, fp: TextIO):
         # fp is a file descriptor, not file name
         text_to_write = self.dumps(obj)
         fp.write(text_to_write)
 
-    def load(self, fp: FileIO) -> object:
+    def load(self, fp: TextIO) -> object:
         data_string = str(fp.read())
         return self.loads(data_string)
 
@@ -102,7 +102,7 @@ def dump_function(func) -> str:
     ret_str += "},\n"
     """
 
-    ret_str += '"code_info": \n'
+    ret_str += '"__code__": \n'
     ret_str += dump_func_code_info(member_list)
 
     ret_str += '}\n'

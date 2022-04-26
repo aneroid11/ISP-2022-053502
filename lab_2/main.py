@@ -104,10 +104,13 @@ def test_function_creating():
 
 
 def main():
-    a = JSONSerializer()
+    serializer = JSONSerializer()
     # encoded = a.dumps(MyClass)
-    encoded = a.dumps(hello_world)
+    encoded = serializer.dumps(hello_world)
     print("Encoded object string:\n" + encoded)
+    out_file = open("serialized_object.json", "w")
+    serializer.dump(hello_world, out_file)
+    out_file.close()
 
     """decoded = a.loads(encoded)
 
@@ -116,14 +119,13 @@ def main():
     print("object: " + str(decoded))
     decoded()"""
 
-    test_function_creating()
+    """test_function_creating()
 
     mth = math
     print(mth.sin(2*mth.pi))
     # mod = types.ModuleType("math")
     mod = __import__("math")
-    print(mod.sin(2 * mod.pi))
-    # print(mod.sin())
+    print(mod.sin(2 * mod.pi))"""
 
     """keys = hello_world.__globals__.keys()
 
