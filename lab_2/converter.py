@@ -1,6 +1,5 @@
 import types
 import inspect
-import json
 
 
 def prepare_func(func) -> dict:
@@ -13,9 +12,9 @@ def prepare_func(func) -> dict:
 
     func_info_dict["__globals__"] = func_globs
 
-    """all_members = inspect.getmembers(func.__code__)
+    all_members = inspect.getmembers(func.__code__)
     member_list = list(filter(lambda member: member[0].startswith("co_"), all_members))
-    func_info_dict["__code__"] = get_func_code_info(member_list)"""
+    func_info_dict["__code__"] = get_func_code_info(member_list)
 
     return func_info_dict
 
@@ -33,28 +32,20 @@ def get_func_globals(func: types.FunctionType) -> dict:
 
 
 def get_func_code_info(member_list: list) -> dict:
-    ret = "{\n"
-
+    code_info = {}
     length = len(member_list)
 
     for i in range(0, length):
         member = member_list[i]
         key = member[0]
         value = member[1]
-        ret += f'"{key}": '
 
         if isinstance(value, bytes):
-            ret += f'"{value.hex()}"'
-        else:
-            ret += json.dumps(value)
+            value = value.hex()
 
-        if i == length - 1:
-            ret += "\n"
-        else:
-            ret += ",\n"
+        code_info[key] = value
 
-    ret += "}\n"
-    return ret
+    return code_info
 
 
 """

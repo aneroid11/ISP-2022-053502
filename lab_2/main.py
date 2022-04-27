@@ -24,7 +24,8 @@ def main_test_function(x):
 
 
 def test_converter():
-    print(converter.prepare_func(hello_world))
+    func_str = json.dumps(converter.prepare_func(hello_world), indent=2)
+    print(func_str)
 
 
 def main():
