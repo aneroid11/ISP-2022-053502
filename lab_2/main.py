@@ -1,7 +1,9 @@
+import inspect
 import json
 import math
 from json_serializer import JSONSerializer
 import converter
+from pprint import pprint
 
 
 c = 42
@@ -23,20 +25,36 @@ def main_test_function(x):
     return math.sin(x * a * c)
 
 
-def test_converter():
+def test_func_converting():
     func_info_dict = converter.prepare_func(hello_world)
     func_str = json.dumps(func_info_dict, indent=2)
     print(func_str)
     converter.load_func_from_info_dict(func_info_dict)()
 
 
+class SimpleClass:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    """def some_method(self):
+        print("hello world" + str(self.x))"""
+
+
+def test_simple_object_converting():
+    simple = SimpleClass(3, 4, 5)
+    print(converter.prepare_object(simple))
+
+
 def main():
-    serializer = JSONSerializer()
+    """serializer = JSONSerializer()
     encoded = serializer.dumps(hello_world)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
     serializer.dump(hello_world, out_file)
-    out_file.close()
+    out_file.close()"""
+    test_simple_object_converting()
 
 
 if __name__ == '__main__':

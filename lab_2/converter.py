@@ -1,6 +1,18 @@
 import types
 import typing
 import inspect
+from pprint import pprint
+
+
+def prepare_object(obj: object) -> dict:
+    obj_info_dict = {"py/object": obj.__module__ + "." + type(obj).__name__}
+
+    all_members = inspect.getmembers(obj)
+    member_list = list(filter(lambda member: not member[0].startswith("__"), all_members))
+
+    pprint(member_list)
+
+    return obj_info_dict
 
 
 def prepare_func(func) -> dict:
