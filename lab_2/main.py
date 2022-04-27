@@ -24,8 +24,10 @@ def main_test_function(x):
 
 
 def test_converter():
-    func_str = json.dumps(converter.prepare_func(hello_world), indent=2)
+    func_info_dict = converter.prepare_func(hello_world)
+    func_str = json.dumps(func_info_dict, indent=2)
     print(func_str)
+    converter.load_func_from_info_dict(func_info_dict)()
 
 
 def main():
@@ -35,7 +37,6 @@ def main():
     out_file = open("serialized_object.json", "w")
     serializer.dump(hello_world, out_file)
     out_file.close()
-    # test_converter()
 
 
 if __name__ == '__main__':
