@@ -1,6 +1,7 @@
 import json
 import math
 from json_serializer import JSONSerializer
+import converter
 
 
 c = 42
@@ -22,13 +23,18 @@ def main_test_function(x):
     return math.sin(x * a * c)
 
 
+def test_converter():
+    print(converter.prepare_func(hello_world))
+
+
 def main():
-    serializer = JSONSerializer()
+    """serializer = JSONSerializer()
     encoded = serializer.dumps(main_test_function)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
     serializer.dump(main_test_function, out_file)
-    out_file.close()
+    out_file.close()"""
+    test_converter()
 
 
 if __name__ == '__main__':
