@@ -75,7 +75,6 @@ def dump_func_code_info(member_list: list) -> str:
         if isinstance(value, bytes):
             ret += f'"{value.hex()}"'
         else:
-            print(key, ":", value)
             ret += json.dumps(value)
 
         if i == length - 1:
