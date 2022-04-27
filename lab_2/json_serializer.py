@@ -1,6 +1,7 @@
 import typing
 from typing import TextIO
 from abstract_serializer import AbstractSerializer
+from converter import prepare_func
 import json
 import inspect
 import types
@@ -18,7 +19,8 @@ class JSONSerializer(AbstractSerializer):
             if tp == "<class 'type'>":
                 dumped = dump_class(obj)
             elif tp == "<class 'function'>":
-                dumped = dump_function(obj)
+                # dumped = dump_function(obj)
+                dumped = json.dumps(prepare_func(obj), indent=2)
             else:
                 dumped = dump_object(obj)
 

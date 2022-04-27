@@ -29,13 +29,13 @@ def test_converter():
 
 
 def main():
-    """serializer = JSONSerializer()
-    encoded = serializer.dumps(main_test_function)
+    serializer = JSONSerializer()
+    encoded = serializer.dumps(hello_world)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
-    serializer.dump(main_test_function, out_file)
-    out_file.close()"""
-    test_converter()
+    serializer.dump(hello_world, out_file)
+    out_file.close()
+    # test_converter()
 
 
 if __name__ == '__main__':

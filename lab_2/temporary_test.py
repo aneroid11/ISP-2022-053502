@@ -1,6 +1,5 @@
 from json_serializer import JSONSerializer
 import inspect
-import math
 
 
 def test_loading_function():
@@ -11,7 +10,7 @@ def test_loading_function():
 
     if inspect.isfunction(loaded_func):
         print("it is a function!")
-        print(loaded_func(1) == math.sin(1 * 123 * 42))
+        loaded_func()
 
 
 if __name__ == "__main__":
