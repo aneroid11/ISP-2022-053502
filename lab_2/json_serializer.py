@@ -173,7 +173,6 @@ def load_function(info: dict):
         if isinstance(value, list):
             # value = tuple(value)
             value = list_to_tuple_recursive(value)
-            print(value)
 
         func_info["__code__"][key] = value
 
