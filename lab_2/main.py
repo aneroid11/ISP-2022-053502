@@ -44,7 +44,13 @@ class SimpleClass:
 
 def test_simple_object_converting():
     simple = SimpleClass(3, 4, 5)
-    print(converter.prepare_object(simple))
+    encoded = converter.prepare_object(simple)
+    print("encoded object: ")
+    print(encoded)
+
+    decoded = converter.load_object_from_info_dict(encoded)
+    print("decoded object:")
+    print(decoded)
 
 
 def main():

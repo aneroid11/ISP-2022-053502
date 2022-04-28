@@ -10,9 +10,29 @@ def prepare_object(obj: object) -> dict:
     all_members = inspect.getmembers(obj)
     member_list = list(filter(lambda member: not member[0].startswith("__"), all_members))
 
-    pprint(member_list)
+    # pprint(member_list)
+    for mem in member_list:
+        obj_info_dict[mem[0]] = mem[1]
 
     return obj_info_dict
+
+
+class Empty:
+    pass
+
+
+def load_object_from_info_dict(info_dict: dict) -> object:
+    arg_dict = {}
+    info_dict_keys = info_dict.keys()
+
+    for key in info_dict_keys:
+        if key == "py/object":
+            continue
+        arg_dict[key] = info_dict[key]
+
+    ret_object = Empty()
+    ret_object.jojo = "pakfosfkoakfoaskfaofoafkoadkasofkso"
+    return ret_object
 
 
 def prepare_func(func) -> dict:
