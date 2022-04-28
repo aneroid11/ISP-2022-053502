@@ -75,9 +75,9 @@ def test_object_converting():
     # pprint(encoded)
     print(json.dumps(encoded, indent=2))
 
-    # decoded = converter.load_object_from_info_dict(encoded)
-    # print("\ndecoded object:")
-    # decoded.print_sum()
+    decoded = converter.load_object_from_info_dict(encoded)
+    print("\ndecoded object:")
+    decoded.print_sum()
 
 
 def main():

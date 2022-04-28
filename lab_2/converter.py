@@ -182,6 +182,9 @@ def load_func_globals(info: dict) -> dict:
         elif isinstance(curr_glob, dict) and "py/builtin_function" in curr_glob:
             # it is a built-in function
             additional_globs[glob_name] = load_builtin_func_from_info_dict(curr_glob)
+        elif isinstance(curr_glob, dict) and "py/function" in curr_glob:
+            # it is an ordinary function
+            additional_globs[glob_name] = load_func_from_info_dict(curr_glob)
 
     for glob_name in additional_globs:
         ret_globs[glob_name] = additional_globs[glob_name]
