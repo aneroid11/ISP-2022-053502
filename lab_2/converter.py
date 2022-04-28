@@ -4,6 +4,13 @@ import inspect
 from pprint import pprint
 
 
+def object_of_elementary_type(obj):
+    is_elem = isinstance(obj, dict) or isinstance(obj, list) or isinstance(obj, str) or \
+              isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, bool) or \
+              isinstance(obj, tuple) or obj is None
+    return is_elem
+
+
 def prepare_object(obj: object) -> dict:
     obj_info_dict = {"py/object": obj.__module__ + "." + type(obj).__name__}
 
@@ -13,7 +20,11 @@ def prepare_object(obj: object) -> dict:
     member_dict = {}
 
     for mem in member_list:
-        member_dict[mem[0]] = mem[1]
+        value = mem[1]
+        if object_of_elementary_type(value):
+            member_dict[mem[0]] = value
+        else:
+            member_dict[mem[0]] = prepare_object(value)
 
     obj_info_dict["members"] = member_dict
     return obj_info_dict
@@ -27,8 +38,14 @@ def load_object_from_info_dict(info_dict: dict) -> object:
     members = info_dict["members"]
     ret_object = Empty()
 
-    for mem in members:
-        ret_object.__setattr__(mem, members[mem])
+    for mem_name in members:
+        current_member = members[mem_name]
+
+        if isinstance(current_member, dict) and "py/object" in current_member:
+            # load this object recursively
+            current_member = load_object_from_info_dict(current_member)
+
+        ret_object.__setattr__(mem_name, current_member)
 
     return ret_object
 

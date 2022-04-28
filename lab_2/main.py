@@ -39,28 +39,36 @@ class SimpleClass:
         self.z = z
 
 
-def test_simple_object_converting():
-    simple = SimpleClass(3, 4, 5)
-    encoded = converter.prepare_object(simple)
+class NotSoSimpleClass:
+    def __init__(self, x, y, z):
+        self.simple_obj = SimpleClass(x, y, z)
+
+
+def test_object_converting():
+    # simple = SimpleClass(3, 4, 5)
+    not_so_simple = NotSoSimpleClass(3, 4, 5)
+    # encoded = converter.prepare_object(simple)
+    encoded = converter.prepare_object(not_so_simple)
     print("encoded object: ")
-    print(encoded)
+    print(json.dumps(encoded, indent=2))
 
     decoded = converter.load_object_from_info_dict(encoded)
     print("decoded object:")
-    print(decoded.x)
-    print(decoded.y)
-    print(decoded.z)
+    print(decoded.__dict__)
+    print(decoded.simple_obj.x)
+    print(decoded.simple_obj.y)
+    print(decoded.simple_obj.z)
 
 
 def main():
-    serializer = JSONSerializer()
+    """serializer = JSONSerializer()
     obj = SimpleClass(3, 4, 5)
     encoded = serializer.dumps(obj)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
-    out_file.close()
-    # test_simple_object_converting()
+    out_file.close()"""
+    test_object_converting()
 
 
 if __name__ == '__main__':
