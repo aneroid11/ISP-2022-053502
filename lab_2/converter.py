@@ -52,7 +52,11 @@ def load_object_from_info_dict(info_dict: dict) -> object:
             current_member = load_object_from_info_dict(current_member)
         if isinstance(current_member, dict) and "py/function" in current_member:
             # it is a method
-            current_member = "this has to be a method"
+            def print_sum(self):
+                print("hello world")
+
+            current_member = types.MethodType(print_sum, ret_object)
+            # current_member = "this has to be a method"
 
         ret_object.__setattr__(mem_name, current_member)
 

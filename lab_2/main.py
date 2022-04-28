@@ -73,7 +73,7 @@ def test_object_converting():
     print(decoded.simple_obj.__dict__)
     print(decoded.some_property)
     # cannot call print_sum() yet, it is a dict
-    # decoded.print_sum()
+    decoded.print_sum()
 
     # constructing a method
     """method_func = obj.print_sum.__func__
