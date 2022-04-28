@@ -72,6 +72,9 @@ def prepare_func(func) -> dict:
         elif isinstance(func_globs[glob_name], types.BuiltinFunctionType):
             # it is a built-in function
             func_globs[glob_name] = prepare_builtin_func(func_globs[glob_name])
+        elif isinstance(func_globs[glob_name], types.FunctionType):
+            # it is an ordinary function
+            func_globs[glob_name] = prepare_func(func_globs[glob_name])
 
     func_info_dict["__globals__"] = func_globs
 

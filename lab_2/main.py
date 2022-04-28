@@ -65,6 +65,7 @@ class NotSoSimpleWithMethods:
         self.some_property = 3.14 / 2
         print("here we need to print the sum of x, y and z")
         print("sin(self.some_property) =", sin(self.some_property))
+        hello_world()
 
 
 def test_object_converting():
@@ -74,19 +75,19 @@ def test_object_converting():
     # pprint(encoded)
     print(json.dumps(encoded, indent=2))
 
-    decoded = converter.load_object_from_info_dict(encoded)
-    print("\ndecoded object:")
-    decoded.print_sum()
+    # decoded = converter.load_object_from_info_dict(encoded)
+    # print("\ndecoded object:")
+    # decoded.print_sum()
 
 
 def main():
-    # test_object_converting()
+    test_object_converting()
 
-    serializer = JSONSerializer()
+    """serializer = JSONSerializer()
     obj = NotSoSimpleWithMethods(3, 4, 5)
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
-    out_file.close()
+    out_file.close()"""
 
 
 if __name__ == '__main__':
