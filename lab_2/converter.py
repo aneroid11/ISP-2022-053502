@@ -82,11 +82,16 @@ def prepare_func(func) -> dict:
     return func_info_dict
 
 
-def prepare_builtin_func(builtin_func) -> dict:
+def prepare_builtin_func(builtin_func: types.BuiltinFunctionType) -> dict:
     func_name = builtin_func.__name__
     module_name = builtin_func.__self__.__name__
     func_info_dict = {"py/builtin_function": func_name, "module": module_name}
     return func_info_dict
+
+
+def load_builtin_func_from_info_dict(info_dict: dict) -> types.BuiltinFunctionType:
+    loaded_func = __import__(info_dict["module"]).__getattribute__(info_dict["py/builtin_function"])
+    return loaded_func
 
 
 def get_func_globals(func: types.FunctionType) -> dict:
@@ -171,6 +176,9 @@ def load_func_globals(info: dict) -> dict:
         if isinstance(curr_glob, str) and curr_glob == "__module_name__":
             # glob_name is the name for a module
             additional_globs[glob_name] = __import__(glob_name)
+        elif isinstance(curr_glob, dict) and "py/builtin_function" in curr_glob:
+            # it is a built-in function
+            additional_globs[glob_name] = load_builtin_func_from_info_dict(curr_glob)
 
     for glob_name in additional_globs:
         ret_globs[glob_name] = additional_globs[glob_name]

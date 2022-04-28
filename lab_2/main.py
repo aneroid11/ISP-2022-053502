@@ -71,8 +71,12 @@ def test_object_converting():
     obj = NotSoSimpleWithMethods(3, 4, 5)
     encoded = converter.prepare_object(obj)
     print("encoded object: ")
-    pprint(encoded)
-    # print(json.dumps(encoded, indent=2))
+    # pprint(encoded)
+    print(json.dumps(encoded, indent=2))
+
+    decoded = converter.load_object_from_info_dict(encoded)
+    print("\ndecoded object:")
+    decoded.print_sum()
 
     """decoded = converter.load_object_from_info_dict(encoded)
 
