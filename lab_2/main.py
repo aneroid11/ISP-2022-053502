@@ -1,6 +1,5 @@
 import inspect
 import json
-# import math
 from math import sin
 import types
 from json_serializer import JSONSerializer
@@ -56,9 +55,18 @@ class NotSoSimpleClass:
 
 
 class NotSoSimpleWithMethods:
+    prop_1 = 66
+    prop_2 = 77
+    prop_3 = 88
+    prop_4 = 99
+    attr_1 = SimpleClass(0, 0, 0)
+
     def __init__(self, x, y, z):
         self.some_property = None
         self.simple_obj = SimpleClass(x, y, z)
+
+    def __hash__(self):
+        return 1
 
     def print_sum(self):
         # print(self.simple_obj.x + self.simple_obj.y + self.simple_obj.z)
@@ -70,7 +78,7 @@ class NotSoSimpleWithMethods:
 
 def test_object_converting():
     obj = NotSoSimpleWithMethods(3, 4, 5)
-    encoded = converter.prepare_object(obj)
+    encoded = converter.prepare_func(obj)
     print("encoded object: ")
     # pprint(encoded)
     print(json.dumps(encoded, indent=2))
@@ -80,11 +88,17 @@ def test_object_converting():
     decoded.print_sum()
 
 
+def test_class_converting():
+    cls = NotSoSimpleWithMethods
+    pprint(dict(cls.__dict__))
+
+
 def main():
-    test_object_converting()
+    test_class_converting()
 
     """serializer = JSONSerializer()
-    obj = NotSoSimpleWithMethods(3, 4, 5)
+    # obj = NotSoSimpleWithMethods(3, 4, 5)
+    obj = main_test_function
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
     out_file.close()"""

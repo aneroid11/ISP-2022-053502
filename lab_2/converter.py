@@ -11,6 +11,11 @@ def object_of_elementary_type(obj) -> bool:
     return is_elem
 
 
+def prepare_class(cls: object) -> dict:
+    return {}
+    # return {"py/type": cls.__}
+
+
 def prepare_object(obj: object) -> dict:
     obj_info_dict = {"py/object": obj.__module__ + "." + type(obj).__name__}
 
@@ -163,14 +168,18 @@ def load_func_from_info_dict(info_dict: dict) -> types.FunctionType:
 
     func_globs = load_func_globals(info_dict)
     func = types.FunctionType(func_code, func_globs)
+
+    # to get the global values overriding those that were saved
+    # func.__globals__.update({"c": globals()["c"]})
+
     return func
 
 
 def load_func_globals(info: dict) -> dict:
     if "__globals__" not in info:
-        return globals()
+        return globals().copy()
 
-    ret_globs = globals()
+    ret_globs = globals().copy()
     additional_globs = info["__globals__"]
 
     for glob_name in additional_globs:

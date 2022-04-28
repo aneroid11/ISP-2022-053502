@@ -13,6 +13,7 @@ def test_loading_object():
 
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
+        # loaded_obj.__globals__.update({"c": globals()["c"]})
         a = 1
         print(loaded_obj(a))
     else:
