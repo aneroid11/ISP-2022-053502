@@ -67,7 +67,11 @@ def prepare_func(func) -> dict:
     func_globs = get_func_globals(func)
     for glob_name in func_globs:
         if isinstance(func_globs[glob_name], types.ModuleType):
+            # it is a module
             func_globs[glob_name] = "__module_name__"
+        elif isinstance(func_globs[glob_name], types.BuiltinFunctionType):
+            # it is a built-in function
+            func_globs[glob_name] = prepare_builtin_func(func_globs[glob_name])
 
     func_info_dict["__globals__"] = func_globs
 
@@ -75,6 +79,13 @@ def prepare_func(func) -> dict:
     member_list = list(filter(lambda member: member[0].startswith("co_"), all_members))
     func_info_dict["__code__"] = get_func_code_info(member_list)
 
+    return func_info_dict
+
+
+def prepare_builtin_func(builtin_func) -> dict:
+    func_name = builtin_func.__name__
+    module_name = builtin_func.__self__.__name__
+    func_info_dict = {"py/builtin_function": func_name, "module": module_name}
     return func_info_dict
 
 

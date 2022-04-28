@@ -2,6 +2,9 @@ from json_serializer import JSONSerializer
 import inspect
 
 
+c = 553
+
+
 def test_loading_object():
     serializer = JSONSerializer()
     file = open("serialized_object.json", "r")
@@ -10,7 +13,8 @@ def test_loading_object():
 
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
-        loaded_obj()
+        a = 1
+        print(loaded_obj(a))
     else:
         print("it is something else!")
         print(loaded_obj)

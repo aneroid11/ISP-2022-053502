@@ -1,8 +1,8 @@
 import inspect
 import json
-import math
+# import math
+from math import sin
 import types
-
 from json_serializer import JSONSerializer
 import converter
 from pprint import pprint
@@ -12,19 +12,28 @@ c = 42
 
 
 def hello_world():
+    sin(2)
+
     print("start hello_world()")
 
     a = {"a": 3, "b": 2}
     serialized_a = json.dumps(a)
     print(serialized_a)
-    print(math.sin(c))
+    # print(math.sin(c))
+    # print(sin(c))
 
     print("end hello_world()")
 
 
 def main_test_function(x):
     a = 123
-    return math.sin(x * a * c)
+
+    print("a ==", a)
+    print("c ==", c)
+    print("x ==", x)
+
+    # return math.sin(x * a * c)
+    return sin(x * a * c)
 
 
 def test_func_converting():
@@ -53,9 +62,9 @@ class NotSoSimpleWithMethods:
 
     def print_sum(self):
         # print(self.simple_obj.x + self.simple_obj.y + self.simple_obj.z)
-        self.some_property = 2
+        self.some_property = 3.14 / 2
         print("here we need to print the sum of x, y and z")
-        print("self.some_property =", self.some_property)
+        print("sin(self.some_property) =", sin(self.some_property))
 
 
 def test_object_converting():
@@ -65,7 +74,7 @@ def test_object_converting():
     pprint(encoded)
     # print(json.dumps(encoded, indent=2))
 
-    decoded = converter.load_object_from_info_dict(encoded)
+    """decoded = converter.load_object_from_info_dict(encoded)
 
     print("\ndecoded object:")
     print(decoded)
@@ -73,7 +82,7 @@ def test_object_converting():
     print(decoded.simple_obj.__dict__)
     print(decoded.some_property)
     # cannot call print_sum() yet, it is a dict
-    decoded.print_sum()
+    decoded.print_sum()"""
 
     # constructing a method
     """method_func = obj.print_sum.__func__
@@ -86,15 +95,35 @@ def test_object_converting():
     # decoded.print_sum()
 
 
+def test_builtin_functions():
+    # __self__: object | ModuleType
+    # __name__: str
+    # __qualname__: str
+    pprint(main_test_function.__globals__)
+    pprint(main_test_function.__code__.co_names)
+
+    func_name = sin.__name__
+    module_name = sin.__self__.__name__
+
+    print(func_name, module_name)
+    loaded_sin = __import__(module_name).__getattribute__(func_name)
+    print(type(loaded_sin))
+    print(loaded_sin(3.14 / 2))
+
+
 def main():
-    serializer = JSONSerializer()
-    obj = NotSoSimpleWithMethods(3, 4, 5)
+    # test_builtin_functions()
+    test_object_converting()
+
+    """serializer = JSONSerializer()
+    # obj = NotSoSimpleWithMethods(3, 4, 5)
+    obj = main_test_function
     encoded = serializer.dumps(obj)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
     out_file.close()
-    # test_object_converting()
+    # test_object_converting()"""
 
 
 if __name__ == '__main__':
