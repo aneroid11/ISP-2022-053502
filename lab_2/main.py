@@ -38,8 +38,8 @@ class SimpleClass:
         self.y = y
         self.z = z
 
-    """def some_method(self):
-        print("hello world" + str(self.x))"""
+    def some_method(self):
+        print("hello world" + str(self.x))
 
 
 def test_simple_object_converting():
@@ -50,7 +50,9 @@ def test_simple_object_converting():
 
     decoded = converter.load_object_from_info_dict(encoded)
     print("decoded object:")
-    print(decoded)
+    print(decoded.x)
+    print(decoded.y)
+    print(decoded.z)
 
 
 def main():

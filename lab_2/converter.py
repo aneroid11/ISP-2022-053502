@@ -10,10 +10,12 @@ def prepare_object(obj: object) -> dict:
     all_members = inspect.getmembers(obj)
     member_list = list(filter(lambda member: not member[0].startswith("__"), all_members))
 
-    # pprint(member_list)
-    for mem in member_list:
-        obj_info_dict[mem[0]] = mem[1]
+    member_dict = {}
 
+    for mem in member_list:
+        member_dict[mem[0]] = mem[1]
+
+    obj_info_dict["members"] = member_dict
     return obj_info_dict
 
 
@@ -22,16 +24,13 @@ class Empty:
 
 
 def load_object_from_info_dict(info_dict: dict) -> object:
-    arg_dict = {}
-    info_dict_keys = info_dict.keys()
-
-    for key in info_dict_keys:
-        if key == "py/object":
-            continue
-        arg_dict[key] = info_dict[key]
-
+    print("object members:")
+    members = info_dict["members"]
     ret_object = Empty()
-    ret_object.jojo = "pakfosfkoakfoaskfaofoafkoadkasofkso"
+
+    for mem in members:
+        ret_object.__setattr__(mem, members[mem])
+
     return ret_object
 
 
