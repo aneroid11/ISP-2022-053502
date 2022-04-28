@@ -16,6 +16,7 @@ def test_loading_object():
         print(loaded_obj)
         print(loaded_obj.__dict__)
         print(loaded_obj.simple_obj.y)
+        loaded_obj.print_sum()
 
 
 if __name__ == "__main__":

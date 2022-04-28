@@ -87,14 +87,14 @@ def test_object_converting():
 
 
 def main():
-    """serializer = JSONSerializer()
-    obj = NotSoSimpleClass(3, 4, 5)
+    serializer = JSONSerializer()
+    obj = NotSoSimpleWithMethods(3, 4, 5)
     encoded = serializer.dumps(obj)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
-    out_file.close()"""
-    test_object_converting()
+    out_file.close()
+    # test_object_converting()
 
 
 if __name__ == '__main__':
