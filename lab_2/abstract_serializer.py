@@ -1,4 +1,4 @@
-from io import FileIO
+from typing import TextIO
 
 
 class AbstractSerializer:
@@ -8,8 +8,8 @@ class AbstractSerializer:
     def loads(self, string: str) -> object:
         raise NotImplementedError()
 
-    def dump(self, obj: object, fp: FileIO):
+    def dump(self, obj: object, fp: TextIO):
         raise NotImplementedError()
 
-    def load(self, fp: FileIO) -> object:
+    def load(self, fp: TextIO) -> object:
         raise NotImplementedError()

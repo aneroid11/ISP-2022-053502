@@ -2,7 +2,7 @@ from json_serializer import JSONSerializer
 import inspect
 
 
-def test_loading_function():
+def test_loading_object():
     serializer = JSONSerializer()
     file = open("serialized_object.json", "r")
     loaded_obj = serializer.load(file)
@@ -19,4 +19,4 @@ def test_loading_function():
 
 
 if __name__ == "__main__":
-    test_loading_function()
+    test_loading_object()

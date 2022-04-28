@@ -4,7 +4,7 @@ import inspect
 from pprint import pprint
 
 
-def object_of_elementary_type(obj):
+def object_of_elementary_type(obj) -> bool:
     is_elem = isinstance(obj, dict) or isinstance(obj, list) or isinstance(obj, str) or \
               isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, bool) or \
               isinstance(obj, tuple) or obj is None
@@ -23,7 +23,12 @@ def prepare_object(obj: object) -> dict:
         value = mem[1]
         if object_of_elementary_type(value):
             member_dict[mem[0]] = value
+        elif type(value).__name__ == "method":
+            # it is a method of the object
+            member_dict[mem[0]] = prepare_func(value.__func__)
+            pass
         else:
+            # it is an object
             member_dict[mem[0]] = prepare_object(value)
 
     obj_info_dict["members"] = member_dict
@@ -41,9 +46,13 @@ def load_object_from_info_dict(info_dict: dict) -> object:
     for mem_name in members:
         current_member = members[mem_name]
 
+        # load nested objects
         if isinstance(current_member, dict) and "py/object" in current_member:
             # load this object recursively
             current_member = load_object_from_info_dict(current_member)
+        if isinstance(current_member, dict) and "py/function" in current_member:
+            # it is a method
+            current_member = "this has to be a method"
 
         ret_object.__setattr__(mem_name, current_member)
 
