@@ -15,6 +15,7 @@ def test_loading_function():
         print("it is something else!")
         print(loaded_obj)
         print(loaded_obj.__dict__)
+        print(loaded_obj.simple_obj.y)
 
 
 if __name__ == "__main__":

@@ -54,6 +54,7 @@ def test_object_converting():
 
     decoded = converter.load_object_from_info_dict(encoded)
     print("decoded object:")
+    print(decoded)
     print(decoded.__dict__)
     print(decoded.simple_obj.x)
     print(decoded.simple_obj.y)
@@ -61,14 +62,14 @@ def test_object_converting():
 
 
 def main():
-    """serializer = JSONSerializer()
-    obj = SimpleClass(3, 4, 5)
+    serializer = JSONSerializer()
+    obj = NotSoSimpleClass(3, 4, 5)
     encoded = serializer.dumps(obj)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
-    out_file.close()"""
-    test_object_converting()
+    out_file.close()
+    # test_object_converting()
 
 
 if __name__ == '__main__':
