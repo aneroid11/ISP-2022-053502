@@ -78,56 +78,15 @@ def test_object_converting():
     print("\ndecoded object:")
     decoded.print_sum()
 
-    """decoded = converter.load_object_from_info_dict(encoded)
-
-    print("\ndecoded object:")
-    print(decoded)
-    print(decoded.__dict__)
-    print(decoded.simple_obj.__dict__)
-    print(decoded.some_property)
-    # cannot call print_sum() yet, it is a dict
-    decoded.print_sum()"""
-
-    # constructing a method
-    """method_func = obj.print_sum.__func__
-    method = types.MethodType(method_func, obj)
-    method()
-
-    method_func_info = converter.prepare_func(method_func)
-    print(method_func_info)"""
-    # print(type(obj.print_sum).__name__)
-    # decoded.print_sum()
-
-
-def test_builtin_functions():
-    # __self__: object | ModuleType
-    # __name__: str
-    # __qualname__: str
-    pprint(main_test_function.__globals__)
-    pprint(main_test_function.__code__.co_names)
-
-    func_name = sin.__name__
-    module_name = sin.__self__.__name__
-
-    print(func_name, module_name)
-    loaded_sin = __import__(module_name).__getattribute__(func_name)
-    print(type(loaded_sin))
-    print(loaded_sin(3.14 / 2))
-
 
 def main():
-    # test_builtin_functions()
-    test_object_converting()
+    # test_object_converting()
 
-    """serializer = JSONSerializer()
-    # obj = NotSoSimpleWithMethods(3, 4, 5)
-    obj = main_test_function
-    encoded = serializer.dumps(obj)
-    print("Encoded object string:\n" + encoded)
+    serializer = JSONSerializer()
+    obj = NotSoSimpleWithMethods(3, 4, 5)
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
     out_file.close()
-    # test_object_converting()"""
 
 
 if __name__ == '__main__':

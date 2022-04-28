@@ -17,8 +17,6 @@ def test_loading_object():
         print(loaded_obj(a))
     else:
         print("it is something else!")
-        print(loaded_obj)
-        print(loaded_obj.__dict__)
         print(loaded_obj.simple_obj.y)
         loaded_obj.print_sum()
 

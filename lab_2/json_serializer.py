@@ -19,8 +19,7 @@ class JSONSerializer(AbstractSerializer):
                 dumped = json.dumps(converter.prepare_func(obj), indent=2)
             else:
                 info_dict = converter.prepare_object(obj)
-                print(info_dict)
-                dumped = json.dumps(converter.prepare_object(obj), indent=2)
+                dumped = json.dumps(info_dict, indent=2)
                 # dumped = dump_object(obj)
 
         return dumped
