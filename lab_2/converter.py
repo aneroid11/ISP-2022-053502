@@ -48,15 +48,13 @@ def load_object_from_info_dict(info_dict: dict) -> object:
 
         # load nested objects
         if isinstance(current_member, dict) and "py/object" in current_member:
+            # it is an object
             # load this object recursively
             current_member = load_object_from_info_dict(current_member)
         if isinstance(current_member, dict) and "py/function" in current_member:
             # it is a method
-            def print_sum(self):
-                print("hello world")
-
-            current_member = types.MethodType(print_sum, ret_object)
-            # current_member = "this has to be a method"
+            member_func = load_func_from_info_dict(current_member)
+            current_member = types.MethodType(member_func, ret_object)
 
         ret_object.__setattr__(mem_name, current_member)
 
