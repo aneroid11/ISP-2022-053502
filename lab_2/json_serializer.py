@@ -1,6 +1,6 @@
 from typing import TextIO
 from abstract_serializer import AbstractSerializer
-from converter import prepare_func, load_func_from_info_dict
+import converter
 import json
 
 
@@ -16,9 +16,12 @@ class JSONSerializer(AbstractSerializer):
             if tp == "<class 'type'>":
                 dumped = dump_class(obj)
             elif tp == "<class 'function'>":
-                dumped = json.dumps(prepare_func(obj), indent=2)
+                dumped = json.dumps(converter.prepare_func(obj), indent=2)
             else:
-                dumped = dump_object(obj)
+                info_dict = converter.prepare_object(obj)
+                print(info_dict)
+                dumped = json.dumps(converter.prepare_object(obj), indent=2)
+                # dumped = dump_object(obj)
 
         return dumped
 
@@ -27,7 +30,9 @@ class JSONSerializer(AbstractSerializer):
 
         if isinstance(decoded_object, dict):
             if "py/function" in decoded_object:
-                return load_func_from_info_dict(decoded_object)
+                return converter.load_func_from_info_dict(decoded_object)
+            elif "py/object" in decoded_object:
+                return converter.load_object_from_info_dict(decoded_object)
 
         return decoded_object
 
@@ -46,13 +51,6 @@ def get_class_name(cls: object) -> str:
 
 
 def dump_class(cls: object) -> str:
-    ret_str = str()
-    ret_str += '{'
-    ret_str += '}'
-    return ret_str
-
-
-def dump_object(obj: object) -> str:
     ret_str = str()
     ret_str += '{'
     ret_str += '}'

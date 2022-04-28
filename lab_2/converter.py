@@ -24,7 +24,6 @@ class Empty:
 
 
 def load_object_from_info_dict(info_dict: dict) -> object:
-    print("object members:")
     members = info_dict["members"]
     ret_object = Empty()
 

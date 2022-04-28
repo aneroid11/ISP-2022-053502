@@ -5,12 +5,16 @@ import inspect
 def test_loading_function():
     serializer = JSONSerializer()
     file = open("serialized_object.json", "r")
-    loaded_func = serializer.load(file)
+    loaded_obj = serializer.load(file)
     file.close()
 
-    if inspect.isfunction(loaded_func):
+    if inspect.isfunction(loaded_obj):
         print("it is a function!")
-        loaded_func()
+        loaded_obj()
+    else:
+        print("it is something else!")
+        print(loaded_obj)
+        print(loaded_obj.__dict__)
 
 
 if __name__ == "__main__":

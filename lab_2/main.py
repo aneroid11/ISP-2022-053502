@@ -38,9 +38,6 @@ class SimpleClass:
         self.y = y
         self.z = z
 
-    def some_method(self):
-        print("hello world" + str(self.x))
-
 
 def test_simple_object_converting():
     simple = SimpleClass(3, 4, 5)
@@ -56,13 +53,14 @@ def test_simple_object_converting():
 
 
 def main():
-    """serializer = JSONSerializer()
-    encoded = serializer.dumps(hello_world)
+    serializer = JSONSerializer()
+    obj = SimpleClass(3, 4, 5)
+    encoded = serializer.dumps(obj)
     print("Encoded object string:\n" + encoded)
     out_file = open("serialized_object.json", "w")
-    serializer.dump(hello_world, out_file)
-    out_file.close()"""
-    test_simple_object_converting()
+    serializer.dump(obj, out_file)
+    out_file.close()
+    # test_simple_object_converting()
 
 
 if __name__ == '__main__':
