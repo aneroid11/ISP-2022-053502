@@ -89,8 +89,17 @@ def test_object_converting():
 
 
 def test_class_converting():
+    # pprint(dict(cls.__dict__))
+
     cls = NotSoSimpleWithMethods
-    pprint(dict(cls.__dict__))
+    encoded = converter.prepare_class(cls)
+    print("encoded class: ")
+    pprint(encoded)
+    # print(json.dumps(encoded, indent=2))
+
+    # decoded = converter.load_object_from_info_dict(encoded)
+    # print("\ndecoded object:")
+    # decoded.print_sum()
 
 
 def main():
