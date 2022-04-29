@@ -78,7 +78,7 @@ class NotSoSimpleWithMethods:
 
 def test_object_converting():
     obj = NotSoSimpleWithMethods(3, 4, 5)
-    encoded = converter.prepare_func(obj)
+    encoded = converter.prepare_object(obj)
     print("encoded object: ")
     # pprint(encoded)
     print(json.dumps(encoded, indent=2))
@@ -104,6 +104,7 @@ def test_class_converting():
 
 def main():
     test_class_converting()
+    # test_object_converting()
 
     """serializer = JSONSerializer()
     # obj = NotSoSimpleWithMethods(3, 4, 5)

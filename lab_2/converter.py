@@ -12,7 +12,32 @@ def object_of_elementary_type(obj) -> bool:
 
 
 def prepare_class(cls: object) -> dict:
-    return {"py/type": cls.__module__ + "." + cls.__name__}
+    info_dict = {"py/type": cls.__module__ + "." + cls.__name__, "members": {}}
+
+    cls_dict = dict(cls.__dict__)
+
+    for member_name in cls_dict:
+        value = cls_dict[member_name]
+        value_typename = type(value).__name__
+
+        if object_of_elementary_type(value):
+            cls_dict[member_name] = value
+        elif value_typename == "getset_descriptor":
+            # skip
+            continue
+        elif value_typename == "function":
+            # it is a function
+            cls_dict[member_name] = prepare_func(value)
+        elif value_typename == "method":
+            # it is a method
+            cls_dict[member_name] = prepare_func(value.__func__)
+        else:
+            # it is an object
+            cls_dict[member_name] = prepare_object(value)
+
+        info_dict["members"][member_name] = cls_dict[member_name]
+
+    return info_dict
 
 
 def prepare_object(obj: object) -> dict:
@@ -25,6 +50,7 @@ def prepare_object(obj: object) -> dict:
 
     for mem in member_list:
         value = mem[1]
+
         if object_of_elementary_type(value):
             member_dict[mem[0]] = value
         elif type(value).__name__ == "method":
