@@ -14,7 +14,7 @@ class JSONSerializer(AbstractSerializer):
             tp = str(obj.__class__)
 
             if tp == "<class 'type'>":
-                dumped = dump_class(obj)
+                dumped = json.dumps(converter.prepare_class(obj), indent=2)
             elif tp == "<class 'function'>":
                 dumped = json.dumps(converter.prepare_func(obj), indent=2)
             else:
@@ -30,6 +30,8 @@ class JSONSerializer(AbstractSerializer):
         if isinstance(decoded_object, dict):
             if "py/function" in decoded_object:
                 return converter.load_func_from_info_dict(decoded_object)
+            elif "py/type" in decoded_object:
+                return converter.load_class_from_info_dict(decoded_object)
             elif "py/object" in decoded_object:
                 return converter.load_object_from_info_dict(decoded_object)
 
@@ -43,14 +45,3 @@ class JSONSerializer(AbstractSerializer):
     def load(self, fp: TextIO) -> object:
         data_string = str(fp.read())
         return self.loads(data_string)
-
-
-def get_class_name(cls: object) -> str:
-    return cls.__module__ + '.' + cls.__name__
-
-
-def dump_class(cls: object) -> str:
-    ret_str = str()
-    ret_str += '{'
-    ret_str += '}'
-    return ret_str

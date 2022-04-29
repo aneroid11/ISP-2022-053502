@@ -50,7 +50,6 @@ def load_class_from_info_dict(info_dict: dict) -> object:
 
     for mem_name in members:
         current_member = members[mem_name]
-        print(mem_name, ":", current_member)
 
         # load nested objects
         if isinstance(current_member, dict):

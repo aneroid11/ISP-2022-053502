@@ -11,11 +11,18 @@ def test_loading_object():
     loaded_obj = serializer.load(file)
     file.close()
 
+    print(loaded_obj)
+
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
         # loaded_obj.__globals__.update({"c": globals()["c"]})
         a = 1
         print(loaded_obj(a))
+    elif inspect.isclass(loaded_obj):
+        print("it is a class!")
+        print(loaded_obj)
+        new_obj = loaded_obj(8, 9, 10)
+        new_obj.print_sum()
     else:
         print("it is something else!")
         print(loaded_obj.simple_obj.y)

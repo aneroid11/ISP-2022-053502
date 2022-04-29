@@ -100,7 +100,9 @@ def test_class_converting():
     decoded = converter.load_class_from_info_dict(encoded)
 
     print("\ndecoded object:")
-    obj = decoded(1, 2, 3)
+    print(decoded)
+    # obj = decoded(1, 2, 3)
+    obj = decoded(5, 6, 7)
     print(obj.print_sum)
     obj.print_sum()
 
@@ -120,16 +122,14 @@ def test_create_class_dynamically():
 
 
 def main():
-    # test_create_class_dynamically()
-    test_class_converting()
-    # test_object_converting()
+    # test_class_converting()
 
-    """serializer = JSONSerializer()
+    serializer = JSONSerializer()
     # obj = NotSoSimpleWithMethods(3, 4, 5)
-    obj = main_test_function
+    obj = NotSoSimpleWithMethods
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
-    out_file.close()"""
+    out_file.close()
 
 
 if __name__ == '__main__':
