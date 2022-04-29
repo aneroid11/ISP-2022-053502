@@ -12,8 +12,7 @@ def object_of_elementary_type(obj) -> bool:
 
 
 def prepare_class(cls: object) -> dict:
-    return {}
-    # return {"py/type": cls.__}
+    return {"py/type": cls.__module__ + "." + cls.__name__}
 
 
 def prepare_object(obj: object) -> dict:
