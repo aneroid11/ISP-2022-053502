@@ -81,7 +81,7 @@ def test_object_converting():
     encoded = converter.prepare_object(obj)
     print("encoded object: ")
     # pprint(encoded)
-    print(json.dumps(encoded, indent=2))
+    # print(json.dumps(encoded, indent=2))
 
     decoded = converter.load_object_from_info_dict(encoded)
     print("\ndecoded object:")
@@ -94,15 +94,33 @@ def test_class_converting():
     cls = NotSoSimpleWithMethods
     encoded = converter.prepare_class(cls)
     print("encoded class: ")
-    pprint(encoded)
-    # print(json.dumps(encoded, indent=2))
+    # pprint(encoded)
+    print(json.dumps(encoded, indent=2))
 
-    # decoded = converter.load_object_from_info_dict(encoded)
-    # print("\ndecoded object:")
-    # decoded.print_sum()
+    decoded = converter.load_class_from_info_dict(encoded)
+
+    print("\ndecoded object:")
+    obj = decoded(1, 2, 3)
+    print(obj.print_sum)
+    obj.print_sum()
+
+
+def hello_world_method(self):
+    print("hello world method")
+
+
+def test_create_class_dynamically():
+    my_class = type("SomeClass",
+                    (object, ),
+                    {
+                        "hello_world": hello_world_method
+                    })
+    my_class_object = my_class()
+    my_class_object.hello_world()
 
 
 def main():
+    # test_create_class_dynamically()
     test_class_converting()
     # test_object_converting()
 

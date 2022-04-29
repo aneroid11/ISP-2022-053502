@@ -12,7 +12,8 @@ def object_of_elementary_type(obj) -> bool:
 
 
 def prepare_class(cls: object) -> dict:
-    info_dict = {"py/type": cls.__module__ + "." + cls.__name__, "members": {}}
+    # info_dict = {"py/type": cls.__module__ + "." + cls.__name__, "members": {}}
+    info_dict = {"py/type": cls.__name__, "members": {}}
 
     cls_dict = dict(cls.__dict__)
 
@@ -31,6 +32,9 @@ def prepare_class(cls: object) -> dict:
         elif value_typename == "method":
             # it is a method
             cls_dict[member_name] = prepare_func(value.__func__)
+        elif value_typename == "type":
+            # it is a global class
+            cls_dict[member_name] = prepare_class(value)
         else:
             # it is an object
             cls_dict[member_name] = prepare_object(value)
@@ -38,6 +42,33 @@ def prepare_class(cls: object) -> dict:
         info_dict["members"][member_name] = cls_dict[member_name]
 
     return info_dict
+
+
+def load_class_from_info_dict(info_dict: dict) -> object:
+    name = info_dict["py/type"]
+    members = info_dict["members"]
+
+    for mem_name in members:
+        current_member = members[mem_name]
+        print(mem_name, ":", current_member)
+
+        # load nested objects
+        if isinstance(current_member, dict):
+            if "py/object" in current_member:
+                # it is an object
+                # load this object recursively
+                current_member = load_object_from_info_dict(current_member)
+            elif "py/function" in current_member:
+                # it is a function
+                current_member = load_func_from_info_dict(current_member)
+
+        members[mem_name] = current_member
+
+    ret_class = type(name,
+                     (object, ),
+                     members)
+
+    return ret_class
 
 
 def prepare_object(obj: object) -> dict:
@@ -105,6 +136,9 @@ def prepare_func(func) -> dict:
         elif isinstance(func_globs[glob_name], types.FunctionType):
             # it is an ordinary function
             func_globs[glob_name] = prepare_func(func_globs[glob_name])
+        elif type(func_globs[glob_name]).__name__ == "type":
+            # it is a class
+            func_globs[glob_name] = prepare_class(func_globs[glob_name])
 
     func_info_dict["__globals__"] = func_globs
 
@@ -219,6 +253,9 @@ def load_func_globals(info: dict) -> dict:
         elif isinstance(curr_glob, dict) and "py/function" in curr_glob:
             # it is an ordinary function
             additional_globs[glob_name] = load_func_from_info_dict(curr_glob)
+        elif isinstance(curr_glob, dict) and "py/type" in curr_glob:
+            # it is a class
+            additional_globs[glob_name] = load_class_from_info_dict(curr_glob)
 
     for glob_name in additional_globs:
         ret_globs[glob_name] = additional_globs[glob_name]
