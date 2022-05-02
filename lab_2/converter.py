@@ -147,7 +147,7 @@ def prepare_func(func) -> dict:
     return func_info_dict
 
 
-def prepare_builtin_func(builtin_func: types.BuiltinFunctionType) -> dict:
+def prepare_builtin_func(builtin_func: object) -> dict:
     func_name = builtin_func.__name__
     module_name = builtin_func.__self__.__name__
     func_info_dict = {"py/builtin_function": func_name, "module": module_name}

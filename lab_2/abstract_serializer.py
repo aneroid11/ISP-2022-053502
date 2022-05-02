@@ -2,16 +2,8 @@ from typing import TextIO
 import converter
 
 
-def dummy_dumps_elementary(elem_obj: object) -> str:
-    pass
-
-
-def dummy_loads_elementary(elem_str: str) -> object:
-    pass
-
-
 def dumps_using_dumps_elementary(obj: object,
-                                 dumps_elementary: type(dummy_dumps_elementary)) -> str:
+                                 dumps_elementary) -> str:
     if converter.object_of_elementary_type(obj):
         dumped = dumps_elementary(obj)
     else:
@@ -21,6 +13,8 @@ def dumps_using_dumps_elementary(obj: object,
             dumped = dumps_elementary(converter.prepare_class(obj))
         elif tp == "<class 'function'>":
             dumped = dumps_elementary(converter.prepare_func(obj))
+        elif tp == "<class 'builtin_function_or_method'>":
+            dumped = dumps_elementary(converter.prepare_builtin_func(obj))
         else:
             # it is an object of some user class
             dumped = dumps_elementary(converter.prepare_object(obj))
@@ -29,7 +23,7 @@ def dumps_using_dumps_elementary(obj: object,
 
 
 def loads_using_loads_elementary(string: str,
-                                 loads_elementary: type(dummy_loads_elementary),
+                                 loads_elementary,
                                  globs: dict = None) -> object:
     decoded_object = loads_elementary(string)
     globs_passed = None if globs is None else globs.copy()

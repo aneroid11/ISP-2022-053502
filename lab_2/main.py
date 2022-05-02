@@ -133,6 +133,8 @@ def main():
     print(encoded)
     temporary_test.test_loading_object(encoded)
 
+    print(str(sin.__class__))
+
 
 if __name__ == '__main__':
     main()
