@@ -1,10 +1,8 @@
-import inspect
 import json
 from math import sin
-import types
 from json_serializer import JSONSerializer
 import converter
-from pprint import pprint
+import temporary_test
 
 
 c = 42
@@ -125,11 +123,13 @@ def main():
     # test_class_converting()
 
     serializer = JSONSerializer()
-    # obj = NotSoSimpleWithMethods(3, 4, 5)
     obj = NotSoSimpleWithMethods
-    out_file = open("serialized_object.json", "w")
+    """out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
-    out_file.close()
+    out_file.close()"""
+
+    encoded = serializer.dumps(obj)
+    temporary_test.test_loading_object(encoded)
 
 
 if __name__ == '__main__':

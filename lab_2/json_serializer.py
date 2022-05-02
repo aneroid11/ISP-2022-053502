@@ -9,8 +9,6 @@ class JSONSerializer(AbstractSerializer):
         try:
             dumped = json.dumps(obj)
         except TypeError:
-            # this is not a simple type. we need a title for the dict
-            # if this is a class
             tp = str(obj.__class__)
 
             if tp == "<class 'type'>":
@@ -18,9 +16,7 @@ class JSONSerializer(AbstractSerializer):
             elif tp == "<class 'function'>":
                 dumped = json.dumps(converter.prepare_func(obj), indent=2)
             else:
-                info_dict = converter.prepare_object(obj)
-                dumped = json.dumps(info_dict, indent=2)
-                # dumped = dump_object(obj)
+                dumped = json.dumps(converter.prepare_object(obj), indent=2)
 
         return dumped
 

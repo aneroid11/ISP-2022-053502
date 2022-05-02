@@ -5,11 +5,15 @@ import inspect
 c = 553
 
 
-def test_loading_object():
+def test_loading_object(serialized_str=None):
     serializer = JSONSerializer()
-    file = open("serialized_object.json", "r")
-    loaded_obj = serializer.load(file)
-    file.close()
+
+    if serialized_str is None:
+        file = open("serialized_object.json", "r")
+        loaded_obj = serializer.load(file)
+        file.close()
+    else:
+        loaded_obj = serializer.loads(serialized_str)
 
     print(loaded_obj)
 
