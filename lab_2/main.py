@@ -1,8 +1,14 @@
 import json
 from math import sin
+from pprint import pprint
+# import toml
+import tomli
+import tomli_w
 
+import toml_serializer
 from json_serializer import JSONSerializer
 from yaml_serializer import YAMLSerializer
+from toml_serializer import TOMLSerializer
 import converter
 import temporary_test
 
@@ -130,12 +136,13 @@ def main():
     # test_class_converting()
 
     # serializer = JSONSerializer()
-    serializer = YAMLSerializer()
-    # obj = main_test_function
-    obj = wello_horld
-    out_file = open("serialized_object.yaml", "w")
-    serializer.dump(obj, out_file)
-    out_file.close()
+    # serializer = YAMLSerializer()
+    serializer = TOMLSerializer()
+    obj = main_test_function
+    # obj = wello_horld
+    # out_file = open("serialized_object.yaml", "w")
+    # serializer.dump(obj, out_file)
+    # out_file.close()
 
     encoded = serializer.dumps(obj)
     print("encoded obj:")

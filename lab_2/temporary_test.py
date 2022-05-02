@@ -1,5 +1,6 @@
 from json_serializer import JSONSerializer
 from yaml_serializer import YAMLSerializer
+from toml_serializer import TOMLSerializer
 import inspect
 
 
@@ -8,7 +9,8 @@ c = 553
 
 def test_loading_object(serialized_str=None):
     # serializer = JSONSerializer()
-    serializer = YAMLSerializer()
+    # serializer = YAMLSerializer()
+    serializer = TOMLSerializer()
 
     if serialized_str is None:
         file = open("serialized_object.json", "r")
@@ -19,9 +21,8 @@ def test_loading_object(serialized_str=None):
 
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
-        # loaded_obj.__globals__.update({"c": globals()["c"]})
-        # print(loaded_obj(1))
-        loaded_obj()
+        print(loaded_obj(1))
+        # loaded_obj()
     elif inspect.isclass(loaded_obj):
         print("it is a class!")
         print(loaded_obj)
