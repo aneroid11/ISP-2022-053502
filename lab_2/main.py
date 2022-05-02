@@ -123,7 +123,7 @@ def main():
     # test_class_converting()
 
     serializer = JSONSerializer()
-    obj = NotSoSimpleWithMethods
+    obj = main_test_function
     """out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
     out_file.close()"""

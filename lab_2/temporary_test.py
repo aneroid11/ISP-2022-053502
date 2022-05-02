@@ -13,13 +13,12 @@ def test_loading_object(serialized_str=None):
         loaded_obj = serializer.load(file)
         file.close()
     else:
-        loaded_obj = serializer.loads(serialized_str)
+        loaded_obj = serializer.loads(serialized_str, globals())
 
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
         # loaded_obj.__globals__.update({"c": globals()["c"]})
-        a = 1
-        print(loaded_obj(a))
+        print(loaded_obj(1))
     elif inspect.isclass(loaded_obj):
         print("it is a class!")
         print(loaded_obj)

@@ -8,8 +8,8 @@ class AbstractSerializer:
     def dump(self, obj: object, fp: TextIO):
         raise NotImplementedError()
 
-    def loads(self, string: str) -> object:
+    def loads(self, string: str, globs: dict = None) -> object:
         raise NotImplementedError()
 
-    def load(self, fp: TextIO) -> object:
+    def load(self, fp: TextIO, globs: dict = None) -> object:
         raise NotImplementedError()

@@ -1,7 +1,6 @@
 import types
 import typing
 import inspect
-from pprint import pprint
 
 
 def object_of_elementary_type(obj) -> bool:
@@ -44,7 +43,7 @@ def prepare_class(cls: object) -> dict:
     return info_dict
 
 
-def load_class_from_info_dict(info_dict: dict) -> object:
+def load_class_from_info_dict(info_dict: dict, globs: dict) -> object:
     name = info_dict["py/type"]
     members = info_dict["members"]
 
@@ -56,10 +55,10 @@ def load_class_from_info_dict(info_dict: dict) -> object:
             if "py/object" in current_member:
                 # it is an object
                 # load this object recursively
-                current_member = load_object_from_info_dict(current_member)
+                current_member = load_object_from_info_dict(current_member, globs)
             elif "py/function" in current_member:
                 # it is a function
-                current_member = load_func_from_info_dict(current_member)
+                current_member = load_func_from_info_dict(current_member, globs)
 
         members[mem_name] = current_member
 
@@ -99,7 +98,7 @@ class Empty:
     pass
 
 
-def load_object_from_info_dict(info_dict: dict) -> object:
+def load_object_from_info_dict(info_dict: dict, globs: dict) -> object:
     members = info_dict["members"]
     ret_object = Empty()
 
@@ -110,10 +109,10 @@ def load_object_from_info_dict(info_dict: dict) -> object:
         if isinstance(current_member, dict) and "py/object" in current_member:
             # it is an object
             # load this object recursively
-            current_member = load_object_from_info_dict(current_member)
+            current_member = load_object_from_info_dict(current_member, globs)
         if isinstance(current_member, dict) and "py/function" in current_member:
             # it is a method
-            member_func = load_func_from_info_dict(current_member)
+            member_func = load_func_from_info_dict(current_member, globs)
             current_member = types.MethodType(member_func, ret_object)
 
         ret_object.__setattr__(mem_name, current_member)
@@ -189,7 +188,7 @@ def get_func_code_info(member_list: list) -> dict:
     return code_info
 
 
-def load_func_from_info_dict(info_dict: dict) -> types.FunctionType:
+def load_func_from_info_dict(info_dict: dict, globs: dict) -> types.FunctionType:
     func_info = {}
     keys = info_dict["__code__"].keys()
     func_info["py/function"] = info_dict["py/function"]
@@ -224,21 +223,24 @@ def load_func_from_info_dict(info_dict: dict) -> types.FunctionType:
                                func_info["__code__"]["co_freevars"],
                                func_info["__code__"]["co_cellvars"])
 
-    func_globs = load_func_globals(info_dict)
+    func_globs, updatable_globs_names = load_func_globals(info_dict, globs)
     func = types.FunctionType(func_code, func_globs)
 
     # to get the global values overriding those that were saved
-    # func.__globals__.update({"c": globals()["c"]})
+    if globs is not None:
+        for glob_name in updatable_globs_names:
+            func.__globals__.update({glob_name: globs[glob_name]})
 
     return func
 
 
-def load_func_globals(info: dict) -> dict:
+def load_func_globals(info: dict, globs: dict) -> typing.Tuple[dict, list]:
     if "__globals__" not in info:
-        return globals().copy()
+        return globals().copy(), []
 
     ret_globs = globals().copy()
     additional_globs = info["__globals__"]
+    updatable_globs_names = []
 
     for glob_name in additional_globs:
         curr_glob = additional_globs[glob_name]
@@ -251,15 +253,17 @@ def load_func_globals(info: dict) -> dict:
             additional_globs[glob_name] = load_builtin_func_from_info_dict(curr_glob)
         elif isinstance(curr_glob, dict) and "py/function" in curr_glob:
             # it is an ordinary function
-            additional_globs[glob_name] = load_func_from_info_dict(curr_glob)
+            additional_globs[glob_name] = load_func_from_info_dict(curr_glob, globs)
         elif isinstance(curr_glob, dict) and "py/type" in curr_glob:
             # it is a class
-            additional_globs[glob_name] = load_class_from_info_dict(curr_glob)
+            additional_globs[glob_name] = load_class_from_info_dict(curr_glob, globs)
+        else:
+            updatable_globs_names.append(glob_name)
 
     for glob_name in additional_globs:
         ret_globs[glob_name] = additional_globs[glob_name]
 
-    return ret_globs
+    return ret_globs, updatable_globs_names
 
 
 def list_to_tuple_recursive(lst: list) -> typing.Tuple:
