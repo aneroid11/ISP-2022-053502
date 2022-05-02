@@ -1,5 +1,6 @@
 import json
 from math import sin
+
 from json_serializer import JSONSerializer
 from yaml_serializer import YAMLSerializer
 import converter
@@ -120,15 +121,21 @@ def test_create_class_dynamically():
     my_class_object.hello_world()
 
 
+def wello_horld():
+    print("heh")
+    pass
+
+
 def main():
     # test_class_converting()
 
     # serializer = JSONSerializer()
     serializer = YAMLSerializer()
-    obj = main_test_function
-    """out_file = open("serialized_object.json", "w")
+    # obj = main_test_function
+    obj = wello_horld
+    out_file = open("serialized_object.yaml", "w")
     serializer.dump(obj, out_file)
-    out_file.close()"""
+    out_file.close()
 
     encoded = serializer.dumps(obj)
     print("encoded obj:")

@@ -20,7 +20,8 @@ def test_loading_object(serialized_str=None):
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
         # loaded_obj.__globals__.update({"c": globals()["c"]})
-        print(loaded_obj(1))
+        # print(loaded_obj(1))
+        loaded_obj()
     elif inspect.isclass(loaded_obj):
         print("it is a class!")
         print(loaded_obj)
