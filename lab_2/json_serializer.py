@@ -6,9 +6,9 @@ import json
 
 class JSONSerializer(AbstractSerializer):
     def dumps(self, obj: object) -> str:
-        try:
-            dumped = json.dumps(obj)
-        except TypeError:
+        if converter.object_of_elementary_type(obj):
+            dumped = json.dumps(obj, indent=2)
+        else:
             tp = str(obj.__class__)
 
             if tp == "<class 'type'>":
