@@ -8,9 +8,9 @@ c = 553
 
 
 def test_loading_object(serialized_str=None):
-    # serializer = JSONSerializer()
+    serializer = JSONSerializer()
     # serializer = YAMLSerializer()
-    serializer = TOMLSerializer()
+    # serializer = TOMLSerializer()
 
     if serialized_str is None:
         file = open("serialized_object.json", "r")

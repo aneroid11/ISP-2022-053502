@@ -135,15 +135,15 @@ def wello_horld():
 def main():
     # test_class_converting()
 
-    # serializer = JSONSerializer()
+    serializer = JSONSerializer()
     # serializer = YAMLSerializer()
-    serializer = TOMLSerializer()
-    # obj = main_test_function
-    obj = 3
+    # serializer = TOMLSerializer()
+    obj = NotSoSimpleWithMethods
+    # obj = (1, 2, 3)
     # obj = wello_horld
-    # out_file = open("serialized_object.yaml", "w")
-    # serializer.dump(obj, out_file)
-    # out_file.close()
+    out_file = open("serialized_object.json", "w")
+    serializer.dump(obj, out_file)
+    out_file.close()
 
     encoded = serializer.dumps(obj)
     print("encoded obj:")
