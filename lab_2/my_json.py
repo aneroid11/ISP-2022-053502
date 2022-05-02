@@ -32,8 +32,23 @@ def dumps(obj: object) -> str:
 
         str_to_return += ']'
         return str_to_return
+    if isinstance(obj, dict):
+        str_to_return = "{"
+        keys = list(obj.keys())
+        size = len(keys)
 
-    return '"3"'
+        for i in range(size):
+            str_to_return += dumps(keys[i])
+            str_to_return += ": "
+            str_to_return += dumps(obj[keys[i]])
+
+            if i != size - 1:
+                str_to_return += ", "
+
+        str_to_return += "}"
+        return str_to_return
+
+    return ""
 
 
 def loads(string: str) -> object:

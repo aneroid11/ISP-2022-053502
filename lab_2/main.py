@@ -134,7 +134,15 @@ def wello_horld():
 
 
 def test_my_json():
-    test_list = [5, "jojo", None, "jojo_2", 4.2131321, True, True, False, [1, 2, 3, True, [1, 2]]]
+    test_list = [5, "jojo", None, "jojo_2", 4.2131321,
+                 True, True, False,
+                 [1, 2, 3, True, [1, 2]],
+                 (2, 3, None, True, [3, 4]),
+                 {
+                     2: "hello world",
+                     3: "wello ",
+                     "dd": None
+                 }]
 
     for obj in test_list:
         print("object:")
