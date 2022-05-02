@@ -1,6 +1,7 @@
 import json
 from math import sin
 from json_serializer import JSONSerializer
+from yaml_serializer import YAMLSerializer
 import converter
 import temporary_test
 
@@ -122,7 +123,8 @@ def test_create_class_dynamically():
 def main():
     # test_class_converting()
 
-    serializer = JSONSerializer()
+    # serializer = JSONSerializer()
+    serializer = YAMLSerializer()
     obj = main_test_function
     """out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
@@ -132,8 +134,6 @@ def main():
     print("encoded obj:")
     print(encoded)
     temporary_test.test_loading_object(encoded)
-
-    print(str(sin.__class__))
 
 
 if __name__ == '__main__':

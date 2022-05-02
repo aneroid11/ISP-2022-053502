@@ -1,4 +1,5 @@
 from json_serializer import JSONSerializer
+from yaml_serializer import YAMLSerializer
 import inspect
 
 
@@ -6,7 +7,8 @@ c = 553
 
 
 def test_loading_object(serialized_str=None):
-    serializer = JSONSerializer()
+    # serializer = JSONSerializer()
+    serializer = YAMLSerializer()
 
     if serialized_str is None:
         file = open("serialized_object.json", "r")

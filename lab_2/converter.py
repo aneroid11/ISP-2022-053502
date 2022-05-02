@@ -182,6 +182,9 @@ def get_func_code_info(member_list: list) -> dict:
 
         if isinstance(value, bytes):
             value = value.hex()
+        # all tuples must be transformed into lists here
+        elif isinstance(value, tuple):
+            value = tuple_to_list_recursive(value)
 
         code_info[key] = value
 
@@ -266,7 +269,18 @@ def load_func_globals(info: dict, globs: dict) -> typing.Tuple[dict, list]:
     return ret_globs, updatable_globs_names
 
 
-def list_to_tuple_recursive(lst: list) -> typing.Tuple:
+def tuple_to_list_recursive(tpl: tuple) -> list:
+    size = len(tpl)
+    ret_list = list(tpl)
+
+    for i in range(size):
+        if isinstance(tpl[i], tuple):
+            ret_list[i] = tuple_to_list_recursive(tpl[i])
+
+    return ret_list
+
+
+def list_to_tuple_recursive(lst: list) -> tuple:
     size = len(lst)
 
     for i in range(size):
