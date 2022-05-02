@@ -6,10 +6,13 @@ class AbstractSerializer:
         raise NotImplementedError()
 
     def dump(self, obj: object, fp: TextIO):
-        raise NotImplementedError()
+        # fp is a file descriptor, not file name
+        text_to_write = self.dumps(obj)
+        fp.write(text_to_write)
 
     def loads(self, string: str, globs: dict = None) -> object:
         raise NotImplementedError()
 
     def load(self, fp: TextIO, globs: dict = None) -> object:
-        raise NotImplementedError()
+        data_string = str(fp.read())
+        return self.loads(data_string, globs)

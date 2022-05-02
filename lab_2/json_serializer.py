@@ -1,4 +1,3 @@
-from typing import TextIO
 from abstract_serializer import AbstractSerializer
 import converter
 import json
@@ -20,11 +19,6 @@ class JSONSerializer(AbstractSerializer):
 
         return dumped
 
-    def dump(self, obj: object, fp: TextIO):
-        # fp is a file descriptor, not file name
-        text_to_write = self.dumps(obj)
-        fp.write(text_to_write)
-
     def loads(self, string: str, globs: dict = None) -> object:
         decoded_object = json.loads(string)
         globs_passed = None if globs is None else globs.copy()
@@ -40,7 +34,3 @@ class JSONSerializer(AbstractSerializer):
                 return converter.load_object_from_info_dict(decoded_object, globs_passed)
 
         return decoded_object
-
-    def load(self, fp: TextIO, globs: dict = None) -> object:
-        data_string = str(fp.read())
-        return self.loads(data_string, globs)
