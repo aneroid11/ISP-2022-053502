@@ -5,10 +5,10 @@ class AbstractSerializer:
     def dumps(self, obj: object) -> str:
         raise NotImplementedError()
 
-    def loads(self, string: str) -> object:
+    def dump(self, obj: object, fp: TextIO):
         raise NotImplementedError()
 
-    def dump(self, obj: object, fp: TextIO):
+    def loads(self, string: str) -> object:
         raise NotImplementedError()
 
     def load(self, fp: TextIO) -> object:

@@ -129,6 +129,8 @@ def main():
     out_file.close()"""
 
     encoded = serializer.dumps(obj)
+    print("encoded obj:")
+    print(encoded)
     temporary_test.test_loading_object(encoded)
 
 

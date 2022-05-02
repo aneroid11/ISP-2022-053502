@@ -15,8 +15,6 @@ def test_loading_object(serialized_str=None):
     else:
         loaded_obj = serializer.loads(serialized_str)
 
-    print(loaded_obj)
-
     if inspect.isfunction(loaded_obj):
         print("it is a function!")
         # loaded_obj.__globals__.update({"c": globals()["c"]})
