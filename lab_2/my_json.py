@@ -1,4 +1,5 @@
 import converter
+import json
 
 
 def is_not_collection(obj: object) -> bool:
@@ -38,7 +39,7 @@ def dumps(obj: object) -> str:
         size = len(keys)
 
         for i in range(size):
-            str_to_return += dumps(keys[i])
+            str_to_return += dumps(str(keys[i]))
             str_to_return += ": "
             str_to_return += dumps(obj[keys[i]])
 
@@ -52,4 +53,4 @@ def dumps(obj: object) -> str:
 
 
 def loads(string: str) -> object:
-    return 3
+    return json.loads(string)

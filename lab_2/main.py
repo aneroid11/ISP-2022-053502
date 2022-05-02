@@ -139,8 +139,8 @@ def test_my_json():
                  [1, 2, 3, True, [1, 2]],
                  (2, 3, None, True, [3, 4]),
                  {
-                     2: "hello world",
-                     3: "wello ",
+                     '2': "hello world",
+                     '3': "wello ",
                      "dd": None
                  }]
 
@@ -150,8 +150,8 @@ def test_my_json():
         print("encoded object:")
         encoded = my_json.dumps(obj)
         print(encoded)
-        # print("decoded object:")
-        # print(my_json.loads(encoded))
+        print("decoded object:")
+        print(my_json.loads(encoded))
         print()
 
 
