@@ -1,36 +1,19 @@
-from abstract_serializer import AbstractSerializer
-import converter
+from abstract_serializer import \
+    AbstractSerializer, dumps_using_dumps_elementary, loads_using_loads_elementary
 import json
+
+
+def json_dumps_elementary(elem_obj: object):
+    return json.dumps(elem_obj, indent=2)
+
+
+def json_loads_elementary(elem_str: str) -> object:
+    return json.loads(elem_str)
 
 
 class JSONSerializer(AbstractSerializer):
     def dumps(self, obj: object) -> str:
-        if converter.object_of_elementary_type(obj):
-            dumped = json.dumps(obj, indent=2)
-        else:
-            tp = str(obj.__class__)
-
-            if tp == "<class 'type'>":
-                dumped = json.dumps(converter.prepare_class(obj), indent=2)
-            elif tp == "<class 'function'>":
-                dumped = json.dumps(converter.prepare_func(obj), indent=2)
-            else:
-                dumped = json.dumps(converter.prepare_object(obj), indent=2)
-
-        return dumped
+        return dumps_using_dumps_elementary(obj, json_dumps_elementary)
 
     def loads(self, string: str, globs: dict = None) -> object:
-        decoded_object = json.loads(string)
-        globs_passed = None if globs is None else globs.copy()
-
-        if isinstance(decoded_object, dict):
-            if "py/function" in decoded_object:
-                return converter.load_func_from_info_dict(decoded_object, globs_passed)
-            elif "py/builtin_function" in decoded_object:
-                return converter.load_builtin_func_from_info_dict(decoded_object)
-            elif "py/type" in decoded_object:
-                return converter.load_class_from_info_dict(decoded_object, globs_passed)
-            elif "py/object" in decoded_object:
-                return converter.load_object_from_info_dict(decoded_object, globs_passed)
-
-        return decoded_object
+        return loads_using_loads_elementary(string, json_loads_elementary, globs)
