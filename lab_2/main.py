@@ -138,7 +138,8 @@ def main():
     # serializer = JSONSerializer()
     # serializer = YAMLSerializer()
     serializer = TOMLSerializer()
-    obj = main_test_function
+    # obj = main_test_function
+    obj = 3
     # obj = wello_horld
     # out_file = open("serialized_object.yaml", "w")
     # serializer.dump(obj, out_file)

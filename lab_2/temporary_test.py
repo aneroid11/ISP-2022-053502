@@ -30,8 +30,9 @@ def test_loading_object(serialized_str=None):
         new_obj.print_sum()
     else:
         print("it is something else!")
-        print(loaded_obj.simple_obj.y)
-        loaded_obj.print_sum()
+        print(loaded_obj)
+        # print(loaded_obj.simple_obj.y)
+        # loaded_obj.print_sum()
 
 
 if __name__ == "__main__":

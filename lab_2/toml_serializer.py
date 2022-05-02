@@ -25,7 +25,10 @@ def none_converter_recursive(obj: object, match: object):
 
 
 def toml_dumps_elementary(elem_obj: object):
-    # let's assume for now that elem_obj is a dictionary
+    if not isinstance(elem_obj, dict):
+        # convert to dict
+        elem_obj = {"py/elem_obj_not_dict": elem_obj}
+
     # replace all Nones with "__None__" strings
     elem_obj = none_converter_recursive(elem_obj, None)
     return tomli_w.dumps(elem_obj)
@@ -33,6 +36,9 @@ def toml_dumps_elementary(elem_obj: object):
 
 def toml_loads_elementary(elem_str: str) -> object:
     loaded = tomli.loads(elem_str)
+
+    if "py/elem_obj_not_dict" in loaded:
+        loaded = loaded["py/elem_obj_not_dict"]
     # replace all "__None__" strings with Nones
     return none_converter_recursive(loaded, "__None__")
 
