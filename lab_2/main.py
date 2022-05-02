@@ -5,6 +5,7 @@ from pprint import pprint
 import tomli
 import tomli_w
 
+import my_json
 import toml_serializer
 from json_serializer import JSONSerializer
 from yaml_serializer import YAMLSerializer
@@ -132,12 +133,24 @@ def wello_horld():
     pass
 
 
-def main():
-    # test_class_converting()
+def test_my_json():
+    test_list = [5, "jojo", None, "jojo_2", 4.2131321, True, True, False, [1, 2, 3, True, [1, 2]]]
 
-    serializer = JSONSerializer()
-    # serializer = YAMLSerializer()
-    # serializer = TOMLSerializer()
+    for obj in test_list:
+        print("object:")
+        print(obj)
+        print("encoded object:")
+        encoded = my_json.dumps(obj)
+        print(encoded)
+        # print("decoded object:")
+        # print(my_json.loads(encoded))
+        print()
+
+
+def main():
+    test_my_json()
+
+    """serializer = JSONSerializer()
     obj = NotSoSimpleWithMethods
     # obj = (1, 2, 3)
     # obj = wello_horld
@@ -148,7 +161,7 @@ def main():
     encoded = serializer.dumps(obj)
     print("encoded obj:")
     print(encoded)
-    temporary_test.test_loading_object(encoded)
+    temporary_test.test_loading_object(encoded)"""
 
 
 if __name__ == '__main__':

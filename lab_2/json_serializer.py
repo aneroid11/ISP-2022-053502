@@ -5,7 +5,7 @@ import my_json as json
 
 
 def json_dumps_elementary(elem_obj: object):
-    return json.dumps(elem_obj, indent=2)
+    return json.dumps(elem_obj)
 
 
 def json_loads_elementary(elem_str: str) -> object:
