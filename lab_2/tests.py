@@ -81,7 +81,6 @@ class NotSoSimpleWithMethods:
         return 1
 
     def some_method(self) -> float:
-        # print(self.simple_obj.x + self.simple_obj.y + self.simple_obj.z)
         self.some_property = 3.14 / 2
         return main_test_function(self.some_property)
 
@@ -95,8 +94,22 @@ class TestJSONSerializer(unittest.TestCase):
             serializer.dump(obj, file_output)
 
         decoded = loading_tests.load_object()
-        self.assertEqual(decoded.prop_1, 66)
         os.remove("test_serialized_object.json")
+
+        self.assertEqual(decoded.prop_1, 66)
+        self.assertEqual(decoded.prop_2, 77)
+        self.assertEqual(decoded.prop_3, 88)
+        self.assertEqual(decoded.prop_4, 99)
+        self.assertEqual(decoded.attr_1.x, 0)
+        self.assertEqual(decoded.attr_1.y, 0)
+        self.assertEqual(decoded.attr_1.z, 0)
+        decoded_obj = decoded(1, 2, 3)
+        self.assertEqual(decoded_obj.some_property, None)
+        self.assertEqual(decoded_obj.simple_obj.x, 1)
+        self.assertEqual(decoded_obj.simple_obj.y, 2)
+        self.assertEqual(decoded_obj.simple_obj.z, 3)
+        self.assertEqual(hash(decoded_obj), 1)
+        self.assertEqual(decoded_obj.some_method(), sin(3.14 / 2 * 123 * 553))
 
 
 class TestMyJSON(unittest.TestCase):
