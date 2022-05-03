@@ -1,4 +1,5 @@
 import unittest
+import loading_tests
 import os
 import my_json
 import json
@@ -7,6 +8,7 @@ from json_serializer import JSONSerializer
 from yaml_serializer import YAMLSerializer
 from toml_serializer import TOMLSerializer
 from create_serializer import create_serializer
+from math import sin
 
 
 class TestCreateSerializer(unittest.TestCase):
@@ -48,13 +50,53 @@ class TestAbstractSerializer(unittest.TestCase):
             self.serializer.load(file)
 
 
-class TestJSONSerializerDumping(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.serializer = create_serializer("json")
+c = 42
 
-    # def test_dumps(self):
-    #    self.assertEqual(True, True)
+
+def main_test_function(x):
+    a = 123
+
+    return sin(x * a * c)
+
+
+class SimpleClass:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+
+class NotSoSimpleWithMethods:
+    prop_1 = 66
+    prop_2 = 77
+    prop_3 = 88
+    prop_4 = 99
+    attr_1 = SimpleClass(0, 0, 0)
+
+    def __init__(self, x, y, z):
+        self.some_property = None
+        self.simple_obj = SimpleClass(x, y, z)
+
+    def __hash__(self):
+        return 1
+
+    def some_method(self) -> float:
+        # print(self.simple_obj.x + self.simple_obj.y + self.simple_obj.z)
+        self.some_property = 3.14 / 2
+        return main_test_function(self.some_property)
+
+
+class TestJSONSerializer(unittest.TestCase):
+    def test_dump_load(self):
+        serializer = create_serializer("json")
+        obj = NotSoSimpleWithMethods
+
+        with open("test_serialized_object.json", "w") as file_output:
+            serializer.dump(obj, file_output)
+
+        decoded = loading_tests.load_object()
+        self.assertEqual(decoded.prop_1, 66)
+        os.remove("test_serialized_object.json")
 
 
 class TestMyJSON(unittest.TestCase):

@@ -1,14 +1,19 @@
 from create_serializer import create_serializer
-import inspect
+# import inspect
 
 
 c = 553
 
 
-def test_loading_object(serialized_str=None):
+def load_object() -> object:
     serializer = create_serializer("json")
 
-    if serialized_str is None:
+    with open("serialized_object.json", "r") as file:
+        ret_object = serializer.load(file, globals())
+
+    return ret_object
+
+    """if serialized_str is None:
         file = open("serialized_object.json", "r")
         loaded_obj = serializer.load(file)
         file.close()
@@ -31,8 +36,4 @@ def test_loading_object(serialized_str=None):
         print("it is something else!")
         print(loaded_obj)
         # print(loaded_obj.simple_obj.y)
-        # loaded_obj.print_sum()
-
-
-if __name__ == "__main__":
-    test_loading_object()
+        # loaded_obj.print_sum()"""
