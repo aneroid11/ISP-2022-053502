@@ -83,8 +83,8 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
                 # if we have an even amount of \ before the character
                 if count_backslashes_before_char(string, i) % 2 == 0:
                     inside_of_quotations = False
-                    ret_str += string[i]
-                    continue
+
+                ret_str += string[i]
         elif inside_of_quotations:
             ret_str += string[i]
         elif not inside_of_quotations:
