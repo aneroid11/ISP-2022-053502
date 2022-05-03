@@ -28,6 +28,9 @@ def test_loading_object(serialized_str=None):
         print(loaded_obj)
         new_obj = loaded_obj(8, 9, 10)
         new_obj.print_sum()
+        print(new_obj.simple_obj.x)
+        print(new_obj.simple_obj.y)
+        print(new_obj.simple_obj.z)
     else:
         print("it is something else!")
         print(loaded_obj)
