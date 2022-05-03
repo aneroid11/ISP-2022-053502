@@ -151,8 +151,14 @@ def test_my_json():
         encoded = my_json.dumps(obj)
         print(encoded)
         print("decoded object:")
-        print(my_json.loads(encoded))
+        print(my_json.loads('\n\n\n\n\n\t\t\t   "hello world"     \n\n\n: "wello horld"'))
         print()
+
+    """str_test = '"hello\\" world"'
+    for ch in str_test:
+        print(ch)
+    print()
+    print(json.loads(str_test))"""
 
 
 def main():

@@ -52,5 +52,32 @@ def dumps(obj: object) -> str:
     return ""
 
 
+def delete_whitespaces_outside_of_strings(string: str) -> str:
+    ret_str = ""
+    length = len(string)
+    inside_of_quotations = False
+
+    for i in range(length):
+        if string[i] == '"':
+            if not inside_of_quotations:
+                inside_of_quotations = True
+                ret_str += string[i]
+                continue
+            elif inside_of_quotations:
+                if string[i - 1] != "\\":
+                    inside_of_quotations = False
+                    ret_str += string[i]
+                    continue
+
+        if (not inside_of_quotations and string[i] != ' ' and \
+                string[i] != '\t' and string[i] != '\n') or inside_of_quotations:
+            ret_str += string[i]
+
+    return ret_str
+
+
 def loads(string: str) -> object:
-    return json.loads(string)
+    string = delete_whitespaces_outside_of_strings(string)
+    print(string)
+
+    return 3
