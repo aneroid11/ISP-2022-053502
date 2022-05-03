@@ -1,5 +1,5 @@
 from typing import TextIO
-import converter
+from . import converter
 
 
 class AbstractSerializer:

@@ -1,7 +1,9 @@
+#!/usr/bin/python3
+
 from sys import exit
 from argparse import ArgumentParser
 from configparser import ConfigParser
-from create_serializer import create_serializer
+from pyobjserializer.create_serializer import create_serializer
 
 
 def convert_file(input_file_name: str, initial_format: str, output_format: str):

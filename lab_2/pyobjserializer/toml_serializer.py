@@ -1,4 +1,4 @@
-from abstract_serializer import \
+from pyobjserializer.abstract_serializer import \
     AbstractSerializer, dumps_using_dumps_elementary, loads_using_loads_elementary
 import tomli_w
 import tomli
