@@ -1,12 +1,5 @@
-import json
 from math import sin
-from pprint import pprint
-# import toml
-import tomli
-import tomli_w
-
 import my_json
-import toml_serializer
 from json_serializer import JSONSerializer
 from yaml_serializer import YAMLSerializer
 from toml_serializer import TOMLSerializer
@@ -23,7 +16,7 @@ def hello_world():
     print("start hello_world()")
 
     a = {"a": 3, "b": 2}
-    serialized_a = json.dumps(a)
+    serialized_a = my_json.dumps(a)
     print(serialized_a)
     # print(math.sin(c))
     # print(sin(c))

@@ -1,5 +1,4 @@
 import converter
-import json
 
 
 def is_not_collection(obj: object) -> bool:
