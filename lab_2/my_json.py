@@ -133,7 +133,7 @@ def loads_from_prepared_string(string: str) -> object:
             elif list_str[i] == "]":
                 brackets_not_closed -= 1
             if (list_str[i] == "," and brackets_not_closed == 0) or i == list_str_len - 1:
-                ret_list.append(curr_elem_str)
+                ret_list.append(loads_from_prepared_string(curr_elem_str))
                 curr_elem_str = ""
                 continue
 
