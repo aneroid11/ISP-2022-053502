@@ -145,38 +145,7 @@ def loads_list(list_str: str) -> object:
 
     for elem_str in elem_str_list:
         ret_list.append(loads_from_prepared_string(elem_str))
-    """list_str += " "
-    curr_elem_str = ""
-    ret_list = []
-    list_str_len = len(list_str)
-    brackets_not_closed = 0
-    braces_not_closed = 0
-    quotations_not_closed = 0
-
-    for i in range(list_str_len):
-        if list_str[i] == "[":
-            brackets_not_closed += 1
-        elif list_str[i] == "]":
-            brackets_not_closed -= 1
-        elif list_str[i] == "{":
-            braces_not_closed += 1
-        elif list_str[i] == "}":
-            braces_not_closed -= 1
-        elif list_str[i] == '"':
-            if count_backslashes_before_char(list_str, i) % 2 == 0:
-                if quotations_not_closed == 0:
-                    quotations_not_closed += 1
-                else:
-                    quotations_not_closed -= 1
-
-        if (list_str[i] == "," and brackets_not_closed == 0 and quotations_not_closed == 0
-                and braces_not_closed == 0) or i == list_str_len - 1:
-            ret_list.append(loads_from_prepared_string(curr_elem_str))
-            curr_elem_str = ""
-            continue
-
-        curr_elem_str += list_str[i]"""
-
+    
     return ret_list
 
 
