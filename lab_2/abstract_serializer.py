@@ -2,6 +2,23 @@ from typing import TextIO
 import converter
 
 
+class AbstractSerializer:
+    def dumps(self, obj: object) -> str:
+        raise NotImplementedError()
+
+    def dump(self, obj: object, fp: TextIO):
+        # fp is a file descriptor, not file name
+        text_to_write = self.dumps(obj)
+        fp.write(text_to_write)
+
+    def loads(self, string: str, globs: dict = None) -> object:
+        raise NotImplementedError()
+
+    def load(self, fp: TextIO, globs: dict = None) -> object:
+        data_string = str(fp.read())
+        return self.loads(data_string, globs)
+
+
 def dumps_using_dumps_elementary(obj: object,
                                  dumps_elementary) -> str:
     if converter.object_of_elementary_type(obj):
@@ -39,20 +56,3 @@ def loads_using_loads_elementary(string: str,
             return converter.load_object_from_info_dict(decoded_object, globs_passed)
 
     return decoded_object
-
-
-class AbstractSerializer:
-    def dumps(self, obj: object) -> str:
-        raise NotImplementedError()
-
-    def dump(self, obj: object, fp: TextIO):
-        # fp is a file descriptor, not file name
-        text_to_write = self.dumps(obj)
-        fp.write(text_to_write)
-
-    def loads(self, string: str, globs: dict = None) -> object:
-        raise NotImplementedError()
-
-    def load(self, fp: TextIO, globs: dict = None) -> object:
-        data_string = str(fp.read())
-        return self.loads(data_string, globs)

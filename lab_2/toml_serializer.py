@@ -5,9 +5,8 @@ import tomli
 
 
 def none_converter_recursive(obj: object, match: object):
-    if match is None:
-        if obj is None:
-            return "__None__"
+    if match is obj is None:
+        return "__None__"
     if obj == match == "__None__":
         return None
 

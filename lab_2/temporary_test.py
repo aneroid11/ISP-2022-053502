@@ -1,6 +1,4 @@
-from json_serializer import JSONSerializer
-from yaml_serializer import YAMLSerializer
-from toml_serializer import TOMLSerializer
+from create_serializer import create_serializer
 import inspect
 
 
@@ -8,9 +6,7 @@ c = 553
 
 
 def test_loading_object(serialized_str=None):
-    serializer = JSONSerializer()
-    # serializer = YAMLSerializer()
-    # serializer = TOMLSerializer()
+    serializer = create_serializer("json")
 
     if serialized_str is None:
         file = open("serialized_object.json", "r")

@@ -1,8 +1,6 @@
 from math import sin
 import my_json
-from json_serializer import JSONSerializer
-from yaml_serializer import YAMLSerializer
-from toml_serializer import TOMLSerializer
+from create_serializer import create_serializer
 import converter
 import temporary_test
 
@@ -141,7 +139,7 @@ def test_my_json():
 
 
 def main():
-    serializer = JSONSerializer()
+    serializer = create_serializer("json")
     obj = NotSoSimpleWithMethods
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
