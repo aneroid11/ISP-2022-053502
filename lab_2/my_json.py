@@ -95,15 +95,26 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
     return ret_str
 
 
+def str_to_num(string: str):
+    try:
+        ret_num = int(string)
+    except ValueError:
+        ret_num = float(string)
+
+    return ret_num
+
+
 def loads_from_prepared_string(string: str) -> object:
     length = len(string)
 
     if string[0] == '"':
         # it is a string
-
         decoded_string = bytes(string[1: length - 1], "utf-8").decode("unicode_escape")
         return decoded_string
-    return 3
+    elif string.isnumeric():
+        # is is a number
+        return str_to_num(string)
+    return None
 
 
 def loads(string: str) -> object:
