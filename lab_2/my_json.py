@@ -82,21 +82,28 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
                 ret_str += string[i]
                 continue
             elif inside_of_quotations:
-                # if string[i - 1] != "\\":
                 # if we have an even amount of \ before the character
                 if count_backslashes_before_char(string, i) % 2 == 0:
                     inside_of_quotations = False
                     ret_str += string[i]
                     continue
-
-        if (not inside_of_quotations and string[i] != ' ' and string[i] != '\t' and string[i] != '\n') \
-                or inside_of_quotations:
+        elif inside_of_quotations:
             ret_str += string[i]
+        elif not inside_of_quotations:
+            if string[i] != ' ' and string[i] != '\t' and string[i] != '\n':
+                ret_str += string[i]
 
     return ret_str
 
 
 def loads_from_prepared_string(string: str) -> object:
+    length = len(string)
+
+    if string[0] == '"':
+        # it is a string
+
+        decoded_string = bytes(string[1: length - 1], "utf-8").decode("unicode_escape")
+        return decoded_string
     return 3
 
 
