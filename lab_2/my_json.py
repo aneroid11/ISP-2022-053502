@@ -111,7 +111,7 @@ def loads_from_prepared_string(string: str) -> object:
         decoded_string = bytes(string[1: length - 1], "utf-8").decode("unicode_escape")
         return decoded_string
     elif string[0].isdigit():
-        # is is a number (int or float)
+        # it is a number (int or float)
         return str_to_num(string)
     elif string == "null":
         return None
@@ -119,6 +119,27 @@ def loads_from_prepared_string(string: str) -> object:
         return True
     elif string == "false":
         return False
+    elif string[0] == "[":
+        # it is a list
+        list_str = string[1: length - 1] + " "
+        curr_elem_str = ""
+        ret_list = []
+        list_str_len = len(list_str)
+        brackets_not_closed = 0
+
+        for i in range(list_str_len):
+            if list_str[i] == "[":
+                brackets_not_closed += 1
+            elif list_str[i] == "]":
+                brackets_not_closed -= 1
+            if (list_str[i] == "," and brackets_not_closed == 0) or i == list_str_len - 1:
+                ret_list.append(curr_elem_str)
+                curr_elem_str = ""
+                continue
+
+            curr_elem_str += list_str[i]
+
+        return ret_list
 
     return None
 
