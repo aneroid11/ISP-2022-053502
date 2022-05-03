@@ -83,7 +83,7 @@ class NotSoSimpleWithMethods:
 
 
 class TestSerializers(unittest.TestCase):
-    def test_dump_load_complex_class(self):
+    def test_dump_load_objects(self):
         serializer_names = ["json", "yaml", "toml"]
 
         objects_with_check_methods = [
