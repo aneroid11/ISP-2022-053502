@@ -136,13 +136,14 @@ def wello_horld():
 def test_my_json():
     test_list = [5, "jojo", None, "jojo_2", 4.2131321,
                  True, True, False,
-                 [1, 2, 3, True, [1, 2]],
-                 (2, 3, None, True, [3, 4]),
-                 {
-                     '2': "hello world",
-                     '3': "wello ",
-                     "dd": None
-                 }]
+                 # [1, 2, 3, True, [1, 2]],
+                 # (2, 3, None, True, [3, 4]),
+                 # {
+                 #    '2': "hello world",
+                 #    '3': "wello ",
+                 #    "dd": None
+                 # }
+                 ]
 
     for obj in test_list:
         print("object:")
@@ -150,9 +151,11 @@ def test_my_json():
         print("encoded object:")
         encoded = my_json.dumps(obj)
         print(encoded)
-        # print("decoded object:")
+        print("decoded object:")
+        decoded = my_json.loads(encoded)
+        print(decoded)
 
-    test_strings = [
+    """test_strings = [
         # '\n\n\n\n\n\t\t\t   "hello world"     \n\n\n: "wello\\\\\\" horld"',
         '"hello\\nworld"',
         '"hello\\n world\\\\"\n',
@@ -166,7 +169,7 @@ def test_my_json():
     for test_str in test_strings:
         decoded_test = my_json.loads(test_str)
         print(decoded_test)
-        print(type(decoded_test))
+        print(type(decoded_test))"""
 
 
 def main():
