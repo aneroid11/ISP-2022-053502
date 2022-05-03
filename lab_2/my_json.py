@@ -145,12 +145,21 @@ def loads_list(list_str: str) -> object:
 
     for elem_str in elem_str_list:
         ret_list.append(loads_from_prepared_string(elem_str))
-    
+
     return ret_list
 
 
 def loads_dict(dict_str: str) -> object:
-    return split_str_into_elems_by(dict_str, ",")
+    pairs_str_list = split_str_into_elems_by(dict_str, ",")
+    ret_dict = {}
+
+    for pair_str in pairs_str_list:
+        key_value_str = split_str_into_elems_by(pair_str, ":")
+        key = loads_from_prepared_string(key_value_str[0])
+        value = loads_from_prepared_string(key_value_str[1])
+        ret_dict[key] = value
+
+    return ret_dict
 
 
 def loads_from_prepared_string(string: str) -> object:
