@@ -107,25 +107,6 @@ def test_class_converting():
     obj.print_sum()
 
 
-def hello_world_method(self):
-    print("hello world method")
-
-
-def test_create_class_dynamically():
-    my_class = type("SomeClass",
-                    (object, ),
-                    {
-                        "hello_world": hello_world_method
-                    })
-    my_class_object = my_class()
-    my_class_object.hello_world()
-
-
-def wello_horld():
-    print("heh")
-    pass
-
-
 def test_my_json():
     test_list = [5,
                  "jojo",
@@ -160,12 +141,8 @@ def test_my_json():
 
 
 def main():
-    # test_my_json()
-
     serializer = JSONSerializer()
     obj = NotSoSimpleWithMethods
-    # obj = (1, 2, 3)
-    # obj = wello_horld
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
     out_file.close()
