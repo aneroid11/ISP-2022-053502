@@ -116,7 +116,7 @@ def test_my_json():
                  False,
                  [1, 2, 3, True, [1, 2], 1],
                  [1, 2, 3, 4, True, False],
-                 (2, 3, None, True, [(3, "hello,\\\" 'hehe''world", "k"), 4]),
+                 (2, 3, None, True, [(3, "hello,\\ \" 'hehe''world", "k"), 4]),
                  {
                      '2': "hello: world",
                      '3': [1, 2, 3, True, [1, 2], 1],
@@ -139,7 +139,10 @@ def test_my_json():
 
 
 def main():
-    serializer = create_serializer("json")
+    test_my_json()
+    print(["\\, \""])
+
+    """serializer = create_serializer("json")
     obj = NotSoSimpleWithMethods
     out_file = open("serialized_object.json", "w")
     serializer.dump(obj, out_file)
@@ -148,7 +151,7 @@ def main():
     encoded = serializer.dumps(obj)
     print("encoded obj:")
     print(encoded)
-    temporary_test.test_loading_object(encoded)
+    temporary_test.test_loading_object(encoded)"""
 
 
 if __name__ == '__main__':

@@ -3,3 +3,5 @@ input.txt
 __pycache__
 Dockerfile
 serialized_object.*
+.coverage
+
