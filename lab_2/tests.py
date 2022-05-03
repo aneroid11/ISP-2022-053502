@@ -77,42 +77,67 @@ class NotSoSimpleWithMethods:
         self.some_property = None
         self.simple_obj = SimpleClass(x, y, z)
 
-    def __hash__(self):
-        return 1
-
     def some_method(self) -> float:
         self.some_property = 3.14 / 2
         return main_test_function(self.some_property)
 
 
 class TestSerializers(unittest.TestCase):
-    def test_dump_load(self):
+    def test_dump_load_complex_class(self):
         serializer_names = ["json", "yaml", "toml"]
 
-        for name in serializer_names:
-            serializer = create_serializer(name)
-            obj = NotSoSimpleWithMethods
+        objects_with_check_methods = [
+            (NotSoSimpleWithMethods, self.check_decoded_class),
+            ({"a": 323, "b": 235234}, self.check_decoded_elementary_object),
+            (main_test_function, self.check_decoded_func),
+            (sin, self.check_decoded_builtin_func),
+            (NotSoSimpleWithMethods(1, 2, 3), self.check_decoded_object)
+        ]
 
-            with open("test_serialized_object." + name, "w") as file_output:
-                serializer.dump(obj, file_output)
+        for obj_with_check in objects_with_check_methods:
+            for name in serializer_names:
+                serializer = create_serializer(name)
 
-            decoded = loading_tests.load_object(name)
-            os.remove("test_serialized_object." + name)
+                obj = obj_with_check[0]
+                check = obj_with_check[1]
 
-            self.assertEqual(decoded.prop_1, 66)
-            self.assertEqual(decoded.prop_2, 77)
-            self.assertEqual(decoded.prop_3, 88)
-            self.assertEqual(decoded.prop_4, 99)
-            self.assertEqual(decoded.attr_1.x, 0)
-            self.assertEqual(decoded.attr_1.y, 0)
-            self.assertEqual(decoded.attr_1.z, 0)
-            decoded_obj = decoded(1, 2, 3)
-            self.assertEqual(decoded_obj.some_property, None)
-            self.assertEqual(decoded_obj.simple_obj.x, 1)
-            self.assertEqual(decoded_obj.simple_obj.y, 2)
-            self.assertEqual(decoded_obj.simple_obj.z, 3)
-            self.assertEqual(hash(decoded_obj), 1)
-            self.assertEqual(decoded_obj.some_method(), sin(3.14 / 2 * 123 * 553))
+                with open("test_serialized_object." + name, "w") as file_output:
+                    serializer.dump(obj, file_output)
+
+                decoded = loading_tests.load_object(name)
+                os.remove("test_serialized_object." + name)
+                check(decoded)
+
+    def check_decoded_class(self, decoded):
+        self.assertEqual(decoded.prop_1, 66)
+        self.assertEqual(decoded.prop_2, 77)
+        self.assertEqual(decoded.prop_3, 88)
+        self.assertEqual(decoded.prop_4, 99)
+        self.assertEqual(decoded.attr_1.x, 0)
+        self.assertEqual(decoded.attr_1.y, 0)
+        self.assertEqual(decoded.attr_1.z, 0)
+        decoded_obj = decoded(1, 2, 3)
+        self.assertEqual(decoded_obj.some_property, None)
+        self.assertEqual(decoded_obj.simple_obj.x, 1)
+        self.assertEqual(decoded_obj.simple_obj.y, 2)
+        self.assertEqual(decoded_obj.simple_obj.z, 3)
+        self.assertEqual(decoded_obj.some_method(), sin(3.14 / 2 * 123 * 553))
+
+    def check_decoded_elementary_object(self, decoded):
+        self.assertEqual(decoded, {"a": 323, "b": 235234})
+
+    def check_decoded_func(self, decoded):
+        self.assertEqual(decoded(132), sin(132 * 123 * 553))
+
+    def check_decoded_builtin_func(self, decoded):
+        self.assertEqual(decoded(3.14), sin(3.14))
+
+    def check_decoded_object(self, decoded_obj):
+        self.assertEqual(decoded_obj.some_property, None)
+        self.assertEqual(decoded_obj.simple_obj.x, 1)
+        self.assertEqual(decoded_obj.simple_obj.y, 2)
+        self.assertEqual(decoded_obj.simple_obj.z, 3)
+        self.assertEqual(decoded_obj.some_method(), sin(3.14 / 2 * 123 * 553))
 
 
 class TestMyJSON(unittest.TestCase):
