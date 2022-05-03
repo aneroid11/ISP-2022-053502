@@ -58,7 +58,6 @@ def count_backslashes_before_char(string: str, index: int) -> int:
     num_backslashes = 0
     i = index - 1
 
-    print("counting")
     while i >= 0:
         print(string[i])
         if string[i] != "\\":

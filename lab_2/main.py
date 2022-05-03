@@ -152,16 +152,10 @@ def test_my_json():
         print(encoded)
         # print("decoded object:")
         # test_str = '\n\n\n\n\n\t\t\t   "hello world"     \n\n\n: "wello\\\\\\" horld"'
-        test_str = '"hello\\nworld"'
+        # test_str = '"hello\\nworld"'
+        test_str = '"hello\\n world\\\\"\n'
         # print(my_json.count_backslashes_before_char(test_str, 41))
         print(my_json.loads(test_str))
-        print()
-
-    """str_test = '"hello\\" world"'
-    for ch in str_test:
-        print(ch)
-    print()
-    print(json.loads(str_test))"""
 
 
 def main():
