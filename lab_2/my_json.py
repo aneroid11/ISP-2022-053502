@@ -140,7 +140,12 @@ def split_str_into_elems_by(list_str: str, separator: str) -> list:
 
 
 def loads_list(list_str: str) -> object:
-    list_str += " "
+    elem_str_list = split_str_into_elems_by(list_str, ",")
+    ret_list = []
+
+    for elem_str in elem_str_list:
+        ret_list.append(loads_from_prepared_string(elem_str))
+    """list_str += " "
     curr_elem_str = ""
     ret_list = []
     list_str_len = len(list_str)
@@ -170,7 +175,7 @@ def loads_list(list_str: str) -> object:
             curr_elem_str = ""
             continue
 
-        curr_elem_str += list_str[i]
+        curr_elem_str += list_str[i]"""
 
     return ret_list
 
