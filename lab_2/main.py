@@ -151,12 +151,22 @@ def test_my_json():
         encoded = my_json.dumps(obj)
         print(encoded)
         # print("decoded object:")
-        # test_str = '\n\n\n\n\n\t\t\t   "hello world"     \n\n\n: "wello\\\\\\" horld"'
-        # test_str = '"hello\\nworld"'
-        # test_str = '"hello\\n world\\\\"\n'
-        test_str = "6.4232"
-        # print(my_json.count_backslashes_before_char(test_str, 41))
-        print(my_json.loads(test_str))
+
+    test_strings = [
+        # '\n\n\n\n\n\t\t\t   "hello world"     \n\n\n: "wello\\\\\\" horld"',
+        '"hello\\nworld"',
+        '"hello\\n world\\\\"\n',
+        "6.42 32",
+        "t r u e",
+        "f a l s e",
+        "nul   \n\n\n\n\t\t\tl"
+    ]
+
+    print("\nloading test strings:")
+    for test_str in test_strings:
+        decoded_test = my_json.loads(test_str)
+        print(decoded_test)
+        print(type(decoded_test))
 
 
 def main():

@@ -59,7 +59,6 @@ def count_backslashes_before_char(string: str, index: int) -> int:
     i = index - 1
 
     while i >= 0:
-        print(string[i])
         if string[i] != "\\":
             break
 
@@ -107,17 +106,24 @@ def str_to_num(string: str):
 def loads_from_prepared_string(string: str) -> object:
     length = len(string)
 
-    if string[0] == '"':
+    if string[0] == '"' and string[length - 1] == '"':
         # it is a string
         decoded_string = bytes(string[1: length - 1], "utf-8").decode("unicode_escape")
         return decoded_string
-    elif string.isnumeric():
-        # is is a number
+    elif string[0].isdigit():
+        # is is a number (int or float)
         return str_to_num(string)
+    elif string == "null":
+        return None
+    elif string == "true":
+        return True
+    elif string == "false":
+        return False
+
     return None
 
 
 def loads(string: str) -> object:
     string = delete_whitespaces_outside_of_strings(string)
-    print(string)
+    # print(string)
     return loads_from_prepared_string(string)
