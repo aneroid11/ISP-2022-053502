@@ -91,7 +91,8 @@ class TestSerializers(unittest.TestCase):
             ({"a": 323, "b": 235234}, self.check_decoded_elementary_object),
             (main_test_function, self.check_decoded_func),
             (sin, self.check_decoded_builtin_func),
-            (NotSoSimpleWithMethods(1, 2, 3), self.check_decoded_object)
+            (NotSoSimpleWithMethods(1, 2, 3), self.check_decoded_object),
+            ("encoded string", self.check_decoded_string)
         ]
 
         for obj_with_check in objects_with_check_methods:
@@ -125,6 +126,9 @@ class TestSerializers(unittest.TestCase):
 
     def check_decoded_elementary_object(self, decoded):
         self.assertEqual(decoded, {"a": 323, "b": 235234})
+
+    def check_decoded_string(self, decoded):
+        self.assertEqual(decoded, "encoded string")
 
     def check_decoded_func(self, decoded):
         self.assertEqual(decoded(132), sin(132 * 123 * 553))
@@ -174,7 +178,3 @@ class TestMyJSON(unittest.TestCase):
             my_json_decoded = my_json.loads(my_json_encoded)
             json_decoded = json.loads(my_json_encoded)
             self.assertEqual(my_json_decoded, json_decoded)
-
-
-if __name__ == "__main__":
-    unittest.main()
