@@ -52,6 +52,24 @@ def dumps(obj: object) -> str:
     return ""
 
 
+def count_backslashes_before_char(string: str, index: int) -> int:
+    # index is the index of the character. for example:
+    # "he\\", the index of the second " is 5
+    num_backslashes = 0
+    i = index - 1
+
+    print("counting")
+    while i >= 0:
+        print(string[i])
+        if string[i] != "\\":
+            break
+
+        num_backslashes += 1
+        i -= 1
+
+    return num_backslashes
+
+
 def delete_whitespaces_outside_of_strings(string: str) -> str:
     ret_str = ""
     length = len(string)
@@ -64,20 +82,25 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
                 ret_str += string[i]
                 continue
             elif inside_of_quotations:
-                if string[i - 1] != "\\":
+                # if string[i - 1] != "\\":
+                # if we have an even amount of \ before the character
+                if count_backslashes_before_char(string, i) % 2 == 0:
                     inside_of_quotations = False
                     ret_str += string[i]
                     continue
 
-        if (not inside_of_quotations and string[i] != ' ' and \
-                string[i] != '\t' and string[i] != '\n') or inside_of_quotations:
+        if (not inside_of_quotations and string[i] != ' ' and string[i] != '\t' and string[i] != '\n') \
+                or inside_of_quotations:
             ret_str += string[i]
 
     return ret_str
 
 
+def loads_from_prepared_string(string: str) -> object:
+    return 3
+
+
 def loads(string: str) -> object:
     string = delete_whitespaces_outside_of_strings(string)
     print(string)
-
-    return 3
+    return loads_from_prepared_string(string)
