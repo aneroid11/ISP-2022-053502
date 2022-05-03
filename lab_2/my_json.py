@@ -140,6 +140,9 @@ def split_str_into_elems_by(list_str: str, separator: str) -> list:
 
 
 def loads_list(list_str: str) -> object:
+    if len(list_str) == 0:
+        return []
+
     elem_str_list = split_str_into_elems_by(list_str, ",")
     ret_list = []
 
@@ -150,6 +153,9 @@ def loads_list(list_str: str) -> object:
 
 
 def loads_dict(dict_str: str) -> object:
+    if len(dict_str) == 0:
+        return {}
+
     pairs_str_list = split_str_into_elems_by(dict_str, ",")
     ret_dict = {}
 
@@ -182,6 +188,7 @@ def loads_from_prepared_string(string: str) -> object:
         # it is a list
         return loads_list(string[1: length - 1])
     elif string[0] == "{":
+        # it is a dict
         return loads_dict(string[1: length - 1])
 
     return None

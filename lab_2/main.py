@@ -150,6 +150,8 @@ def test_my_json():
                      '3': [1, 2, 3, True, [1, 2], 1],
                      "dd": [1, 2, 3, True, [1, 2], 1],
                      "inside_dict": {"ins1": "i", "ins2": "j"},
+                     "empty_list": [],
+                     "empty_dict": {},
                      "Nonenenen": None
                  }]
 
@@ -165,9 +167,9 @@ def test_my_json():
 
 
 def main():
-    test_my_json()
+    # test_my_json()
 
-    """serializer = JSONSerializer()
+    serializer = JSONSerializer()
     obj = NotSoSimpleWithMethods
     # obj = (1, 2, 3)
     # obj = wello_horld
@@ -178,7 +180,7 @@ def main():
     encoded = serializer.dumps(obj)
     print("encoded obj:")
     print(encoded)
-    temporary_test.test_loading_object(encoded)"""
+    temporary_test.test_loading_object(encoded)
 
 
 if __name__ == '__main__':
