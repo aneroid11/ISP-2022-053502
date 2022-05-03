@@ -37,9 +37,9 @@ def main_test_function(x):
 
 def test_func_converting():
     func_info_dict = converter.prepare_func(hello_world)
-    func_str = json.dumps(func_info_dict, indent=2)
+    func_str = my_json.dumps(func_info_dict)
     print(func_str)
-    converter.load_func_from_info_dict(func_info_dict)()
+    converter.load_func_from_info_dict(func_info_dict, globals())()
 
 
 class SimpleClass:
@@ -83,7 +83,7 @@ def test_object_converting():
     # pprint(encoded)
     # print(json.dumps(encoded, indent=2))
 
-    decoded = converter.load_object_from_info_dict(encoded)
+    decoded = converter.load_object_from_info_dict(encoded, globals())
     print("\ndecoded object:")
     decoded.print_sum()
 
@@ -95,9 +95,9 @@ def test_class_converting():
     encoded = converter.prepare_class(cls)
     print("encoded class: ")
     # pprint(encoded)
-    print(json.dumps(encoded, indent=2))
+    print(my_json.dumps(encoded))
 
-    decoded = converter.load_class_from_info_dict(encoded)
+    decoded = converter.load_class_from_info_dict(encoded, globals())
 
     print("\ndecoded object:")
     print(decoded)
