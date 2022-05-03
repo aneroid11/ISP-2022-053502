@@ -146,9 +146,11 @@ def test_my_json():
                  [1, 2, 3, 4, True, False],
                  (2, 3, None, True, [(3, "hello,\\\" 'hehe''world", "k"), 4]),
                  {
-                     '2': "hello world",
-                     '3': "wello ",
-                     "dd": None
+                     '2': "hello: world",
+                     '3': [1, 2, 3, True, [1, 2], 1],
+                     "dd": [1, 2, 3, True, [1, 2], 1],
+                     "inside_dict": {"ins1": "i", "ins2": "j"},
+                     "Nonenenen": None
                  }]
 
     for obj in test_list:
@@ -160,22 +162,6 @@ def test_my_json():
         print("decoded object:")
         decoded = my_json.loads(encoded)
         print(decoded)
-
-    """test_strings = [
-        # '\n\n\n\n\n\t\t\t   "hello world"     \n\n\n: "wello\\\\\\" horld"',
-        '"hello\\nworld"',
-        '"hello\\n world\\\\"\n',
-        "6.42 32",
-        "t r u e",
-        "f a l s e",
-        "nul   \n\n\n\n\t\t\tl"
-    ]
-
-    print("\nloading test strings:")
-    for test_str in test_strings:
-        decoded_test = my_json.loads(test_str)
-        print(decoded_test)
-        print(type(decoded_test))"""
 
 
 def main():

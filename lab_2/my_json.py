@@ -103,6 +103,82 @@ def str_to_num(string: str):
     return ret_num
 
 
+def split_str_into_elems_by(list_str: str, separator: str) -> list:
+    list_str += " "
+    curr_elem_str = ""
+    ret_list = []
+    list_str_len = len(list_str)
+    brackets_not_closed = 0
+    braces_not_closed = 0
+    quotations_not_closed = 0
+
+    for i in range(list_str_len):
+        if list_str[i] == "[":
+            brackets_not_closed += 1
+        elif list_str[i] == "]":
+            brackets_not_closed -= 1
+        elif list_str[i] == "{":
+            braces_not_closed += 1
+        elif list_str[i] == "}":
+            braces_not_closed -= 1
+        elif list_str[i] == '"':
+            if count_backslashes_before_char(list_str, i) % 2 == 0:
+                if quotations_not_closed == 0:
+                    quotations_not_closed += 1
+                else:
+                    quotations_not_closed -= 1
+
+        if (list_str[i] == separator and brackets_not_closed == 0 and quotations_not_closed == 0
+                and braces_not_closed == 0) or i == list_str_len - 1:
+            ret_list.append(curr_elem_str)
+            curr_elem_str = ""
+            continue
+
+        curr_elem_str += list_str[i]
+
+    return ret_list
+
+
+def loads_list(list_str: str) -> object:
+    list_str += " "
+    curr_elem_str = ""
+    ret_list = []
+    list_str_len = len(list_str)
+    brackets_not_closed = 0
+    braces_not_closed = 0
+    quotations_not_closed = 0
+
+    for i in range(list_str_len):
+        if list_str[i] == "[":
+            brackets_not_closed += 1
+        elif list_str[i] == "]":
+            brackets_not_closed -= 1
+        elif list_str[i] == "{":
+            braces_not_closed += 1
+        elif list_str[i] == "}":
+            braces_not_closed -= 1
+        elif list_str[i] == '"':
+            if count_backslashes_before_char(list_str, i) % 2 == 0:
+                if quotations_not_closed == 0:
+                    quotations_not_closed += 1
+                else:
+                    quotations_not_closed -= 1
+
+        if (list_str[i] == "," and brackets_not_closed == 0 and quotations_not_closed == 0
+                and braces_not_closed == 0) or i == list_str_len - 1:
+            ret_list.append(loads_from_prepared_string(curr_elem_str))
+            curr_elem_str = ""
+            continue
+
+        curr_elem_str += list_str[i]
+
+    return ret_list
+
+
+def loads_dict(dict_str: str) -> object:
+    return split_str_into_elems_by(dict_str, ",")
+
+
 def loads_from_prepared_string(string: str) -> object:
     length = len(string)
 
@@ -121,34 +197,9 @@ def loads_from_prepared_string(string: str) -> object:
         return False
     elif string[0] == "[":
         # it is a list
-        list_str = string[1: length - 1] + " "
-        curr_elem_str = ""
-        ret_list = []
-        list_str_len = len(list_str)
-        brackets_not_closed = 0
-        quotations_not_closed = 0
-
-        for i in range(list_str_len):
-            if list_str[i] == "[":
-                brackets_not_closed += 1
-            elif list_str[i] == "]":
-                brackets_not_closed -= 1
-            elif list_str[i] == '"':
-                if count_backslashes_before_char(list_str, i) % 2 == 0:
-                    if quotations_not_closed == 0:
-                        quotations_not_closed += 1
-                    else:
-                        quotations_not_closed -= 1
-
-            if (list_str[i] == "," and brackets_not_closed == 0 and quotations_not_closed == 0) or \
-                    i == list_str_len - 1:
-                ret_list.append(loads_from_prepared_string(curr_elem_str))
-                curr_elem_str = ""
-                continue
-
-            curr_elem_str += list_str[i]
-
-        return ret_list
+        return loads_list(string[1: length - 1])
+    elif string[0] == "{":
+        return loads_dict(string[1: length - 1])
 
     return None
 
