@@ -1,4 +1,4 @@
-import converter
+from . import converter
 
 
 def is_not_collection(obj: object) -> bool:

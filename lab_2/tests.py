@@ -2,13 +2,13 @@ import unittest
 import os
 import json
 from math import sin
-import my_json
+from pyobjserializer.my_json import dumps, loads
 import loading_tests
-import abstract_serializer
-from json_serializer import JSONSerializer
-from yaml_serializer import YAMLSerializer
-from toml_serializer import TOMLSerializer
-from create_serializer import create_serializer
+from pyobjserializer import abstract_serializer
+from pyobjserializer.json_serializer import JSONSerializer
+from pyobjserializer.yaml_serializer import YAMLSerializer
+from pyobjserializer.toml_serializer import TOMLSerializer
+from pyobjserializer.create_serializer import create_serializer
 
 
 class TestCreateSerializer(unittest.TestCase):
@@ -172,9 +172,13 @@ class TestMyJSON(unittest.TestCase):
                      }]
 
         for obj in test_list:
-            my_json_encoded = my_json.dumps(obj)
+            my_json_encoded = dumps(obj)
             json_encoded = json.dumps(obj)
             self.assertEqual(my_json_encoded, json_encoded)
-            my_json_decoded = my_json.loads(my_json_encoded)
+            my_json_decoded = loads(my_json_encoded)
             json_decoded = json.loads(my_json_encoded)
             self.assertEqual(my_json_decoded, json_decoded)
+
+
+if __name__ == "__main__":
+    unittest.main()
