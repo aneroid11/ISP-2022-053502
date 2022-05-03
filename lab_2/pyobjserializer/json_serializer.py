@@ -1,7 +1,6 @@
-from pyobjserializer.abstract_serializer import \
+from abstract_serializer import \
     AbstractSerializer, dumps_using_dumps_elementary, loads_using_loads_elementary
-# import json
-from pyobjserializer import my_json as json
+import my_json as json
 
 
 def json_dumps_elementary(elem_obj: object):

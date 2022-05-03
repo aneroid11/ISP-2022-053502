@@ -1,4 +1,4 @@
-from pyobjserializer import converter
+import converter
 
 
 def is_not_collection(obj: object) -> bool:
