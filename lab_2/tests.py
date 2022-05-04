@@ -92,16 +92,21 @@ class NotSoSimpleWithMethods:
     attr_1 = SimpleClass(0, 0, 0)
 
     def __init__(self, x, y, z):
+        """Initialize class instance with some basic values."""
         self.some_property = None
         self.simple_obj = SimpleClass(x, y, z)
 
     def some_method(self) -> float:
+        """Do some action that uses a flobal function."""
         self.some_property = 3.14 / 2
         return main_test_function(self.some_property)
 
 
 class TestSerializers(unittest.TestCase):
+    """A class to check if serializers are working properly."""
+
     def test_dump_load_objects(self):
+        """Dump some objects, load them and compare initial version with the decoded."""
         serializer_names = ["json", "yaml", "toml"]
 
         objects_with_check_methods = [
@@ -128,6 +133,7 @@ class TestSerializers(unittest.TestCase):
                 check(decoded)
 
     def check_decoded_class(self, decoded):
+        """Check if decoded matches the NotSoSimpleWithMethods class."""
         self.assertEqual(decoded.prop_1, 66)
         self.assertEqual(decoded.prop_2, 77)
         self.assertEqual(decoded.prop_3, 88)
@@ -143,18 +149,23 @@ class TestSerializers(unittest.TestCase):
         self.assertEqual(decoded_obj.some_method(), sin(3.14 / 2 * 123 * 553))
 
     def check_decoded_elementary_object(self, decoded):
+        """Check if decoded matches the dictionary."""
         self.assertEqual(decoded, {"a": 323, "b": 235234})
 
     def check_decoded_string(self, decoded):
+        """Check if decoded matches an example string."""
         self.assertEqual(decoded, "encoded string")
 
     def check_decoded_func(self, decoded):
+        """Check if decoded matches main_test_function()."""
         self.assertEqual(decoded(132), sin(132 * 123 * 553))
 
     def check_decoded_builtin_func(self, decoded):
+        """Check if decoded matches sin()."""
         self.assertEqual(decoded(3.14), sin(3.14))
 
     def check_decoded_object(self, decoded_obj):
+        """Check if decoded_obj matches an instance of NotSoSimpleWithMethods."""
         self.assertEqual(decoded_obj.some_property, None)
         self.assertEqual(decoded_obj.simple_obj.x, 1)
         self.assertEqual(decoded_obj.simple_obj.y, 2)
@@ -163,7 +174,10 @@ class TestSerializers(unittest.TestCase):
 
 
 class TestMyJSON(unittest.TestCase):
+    """Test the my_json.py module."""
+
     def test_my_json(self):
+        """Dump, load and check an object containing everything that my_json should serialize."""
         test_list = [
             5,
             "jojo",
