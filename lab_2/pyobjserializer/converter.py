@@ -266,7 +266,8 @@ def load_func_from_info_dict(
     # to get the global values overriding those that were saved
     if globs is not None:
         for glob_name in updatable_globs_names:
-            func.__globals__.update({glob_name: globs[glob_name]})
+            if glob_name in globs:
+                func.__globals__.update({glob_name: globs[glob_name]})
 
     return func
 
@@ -278,7 +279,7 @@ def load_func_globals(info: dict, globs: Union[dict, None]) -> Tuple[dict, list]
 
     ret_globs = globals().copy()
     additional_globs = info["__globals__"]
-    updatable_globs_names = []
+    # updatable_globs_names = []
 
     for glob_name in additional_globs:
         curr_glob = additional_globs[glob_name]
@@ -295,13 +296,11 @@ def load_func_globals(info: dict, globs: Union[dict, None]) -> Tuple[dict, list]
         elif isinstance(curr_glob, dict) and "py/type" in curr_glob:
             # it is a class
             additional_globs[glob_name] = load_class_from_info_dict(curr_glob, globs)
-        else:
-            updatable_globs_names.append(glob_name)
 
     for glob_name in additional_globs:
         ret_globs[glob_name] = additional_globs[glob_name]
 
-    return ret_globs, updatable_globs_names
+    return ret_globs, additional_globs
 
 
 def tuple_to_list_recursive(tpl: tuple) -> list:
