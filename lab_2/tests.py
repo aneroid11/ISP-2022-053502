@@ -37,10 +37,10 @@ class TestAbstractSerializer(unittest.TestCase):
         obj = {"a": "a", "b": "b"}
 
         with self.assertRaises(NotImplementedError):
-            self.serializer.dumps(3)
+            self.serializer.dumps(obj)
 
         with self.assertRaises(NotImplementedError), open("dumped.txt", "w") as file:
-            self.serializer.dump(3, file)
+            self.serializer.dump(obj, file)
 
     def test_loads(self):
         with self.assertRaises(NotImplementedError):
@@ -92,7 +92,7 @@ class TestSerializers(unittest.TestCase):
             (main_test_function, self.check_decoded_func),
             (sin, self.check_decoded_builtin_func),
             (NotSoSimpleWithMethods(1, 2, 3), self.check_decoded_object),
-            ("encoded string", self.check_decoded_string)
+            ("encoded string", self.check_decoded_string),
         ]
 
         for obj_with_check in objects_with_check_methods:
@@ -146,30 +146,41 @@ class TestSerializers(unittest.TestCase):
 
 class TestMyJSON(unittest.TestCase):
     def test_my_json(self):
-        test_list = [5,
-                     "jojo",
-                     None,
-                     "jojo_2",
-                     4.2131321,
-                     True,
-                     True,
-                     False,
-                     [1, 2, 3, True, [1, 2], 1],
-                     [1, 2, 3, 4, True, False],
-                     (2, 3, None, True,
-                      [(3,
-                        # "hello,\\\" 'hehe''world",
+        test_list = [
+            5,
+            "jojo",
+            None,
+            "jojo_2",
+            4.2131321,
+            True,
+            True,
+            False,
+            [1, 2, 3, True, [1, 2], 1],
+            [1, 2, 3, 4, True, False],
+            (
+                2,
+                3,
+                None,
+                True,
+                [
+                    (
+                        3,
                         "hello, 'hehe', world",
-                        "k"), 4]),
-                     {
-                         '2': "hello: world",
-                         '3': [1, 2, 3, True, [1, 2], 1],
-                         "dd": [1, 2, 3, True, [1, 2], 1],
-                         "inside_dict": {"ins1": "i", "ins2": "j"},
-                         "empty_list": [],
-                         "empty_dict": {},
-                         "Nonenenen": None
-                     }]
+                        "k",
+                    ),
+                    4,
+                ],
+            ),
+            {
+                "2": "hello: world",
+                "3": [1, 2, 3, True, [1, 2], 1],
+                "dd": [1, 2, 3, True, [1, 2], 1],
+                "inside_dict": {"ins1": "i", "ins2": "j"},
+                "empty_list": [],
+                "empty_dict": {},
+                "Nonenenen": None,
+            },
+        ]
 
         for obj in test_list:
             my_json_encoded = dumps(obj)
