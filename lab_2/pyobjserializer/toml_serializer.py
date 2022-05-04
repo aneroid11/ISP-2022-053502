@@ -32,6 +32,9 @@ def toml_dumps_elementary(elem_obj: object):
 
     # replace all Nones with "__None__" strings
     elem_obj = none_converter_recursive(elem_obj, None)
+    if not isinstance(elem_obj, dict):
+        raise TypeError()
+
     return tomli_w.dumps(elem_obj)
 
 

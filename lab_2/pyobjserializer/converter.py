@@ -1,24 +1,24 @@
 import inspect
 import types
-from typing import Dict, Tuple, Any
+from typing import Any, Dict, Tuple, Union
 
 
 def object_of_elementary_type(obj) -> bool:
     is_elem = (
-            isinstance(obj, dict)
-            or isinstance(obj, list)
-            or isinstance(obj, str)
-            or isinstance(obj, int)
-            or isinstance(obj, float)
-            or isinstance(obj, bool)
-            or isinstance(obj, tuple)
-            or obj is None
+        isinstance(obj, dict)
+        or isinstance(obj, list)
+        or isinstance(obj, str)
+        or isinstance(obj, int)
+        or isinstance(obj, float)
+        or isinstance(obj, bool)
+        or isinstance(obj, tuple)
+        or obj is None
     )
     return is_elem
 
 
 def prepare_class(cls: type) -> dict:
-    info_dict = {"py/type": cls.__name__, "members": {}}
+    info_dict: Dict[str, Any] = {"py/type": cls.__name__, "members": {}}
 
     cls_dict = dict(cls.__dict__)
 
@@ -49,7 +49,7 @@ def prepare_class(cls: type) -> dict:
     return info_dict
 
 
-def load_class_from_info_dict(info_dict: dict, globs: dict) -> object:
+def load_class_from_info_dict(info_dict: dict, globs: Union[dict, None]) -> object:
     name = info_dict["py/type"]
     members = info_dict["members"]
 
@@ -74,7 +74,9 @@ def load_class_from_info_dict(info_dict: dict, globs: dict) -> object:
 
 
 def prepare_object(obj: object) -> Dict[str, Any]:
-    obj_info_dict: Dict[str, Any] = {"py/object": obj.__module__ + "." + type(obj).__name__}
+    obj_info_dict: Dict[str, Any] = {
+        "py/object": obj.__module__ + "." + type(obj).__name__
+    }
 
     all_members = inspect.getmembers(obj)
     member_list = list(
@@ -104,7 +106,7 @@ class Empty:
     pass
 
 
-def load_object_from_info_dict(info_dict: dict, globs: dict) -> object:
+def load_object_from_info_dict(info_dict: dict, globs: Union[dict, None]) -> object:
     members = info_dict["members"]
     ret_object = Empty()
 
@@ -127,7 +129,9 @@ def load_object_from_info_dict(info_dict: dict, globs: dict) -> object:
 
 
 def prepare_func(func: types.FunctionType) -> dict:
-    func_info_dict = {"py/function": func.__module__ + "." + func.__name__}
+    func_info_dict: Dict[str, Any] = {
+        "py/function": func.__module__ + "." + func.__name__
+    }
 
     func_globs = get_func_globals(func)
     for glob_name in func_globs:
@@ -203,7 +207,9 @@ def get_func_code_info(member_list: list) -> dict:
     return code_info
 
 
-def load_func_from_info_dict(info_dict: dict, globs: dict) -> types.FunctionType:
+def load_func_from_info_dict(
+    info_dict: dict, globs: Union[dict, None]
+) -> types.FunctionType:
     func_info = {}
     keys = info_dict["__code__"].keys()
     func_info["py/function"] = info_dict["py/function"]
@@ -251,7 +257,7 @@ def load_func_from_info_dict(info_dict: dict, globs: dict) -> types.FunctionType
     return func
 
 
-def load_func_globals(info: dict, globs: dict) -> Tuple[dict, list]:
+def load_func_globals(info: dict, globs: Union[dict, None]) -> Tuple[dict, list]:
     if "__globals__" not in info:
         return globals().copy(), []
 
