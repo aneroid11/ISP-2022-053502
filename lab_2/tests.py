@@ -1,3 +1,5 @@
+"""Testing module for the pyobjserializer library."""
+
 import json
 import os
 import unittest
@@ -13,7 +15,10 @@ from pyobjserializer.yaml_serializer import YAMLSerializer
 
 
 class TestCreateSerializer(unittest.TestCase):
+    """Testing the create_serializer() function."""
+
     def test_create_serializer(self):
+        """Test that create_serializer() creates serializers of valid type."""
         serializer = create_serializer("json")
         self.assertTrue(type(serializer) == JSONSerializer)
         serializer = create_serializer("yaml")
@@ -26,15 +31,20 @@ class TestCreateSerializer(unittest.TestCase):
 
 
 class TestAbstractSerializer(unittest.TestCase):
+    """Test the AbstractSerializer class."""
+
     @classmethod
     def setUpClass(cls):
+        """Create a serializer to test."""
         cls.serializer = abstract_serializer.AbstractSerializer()
 
     @classmethod
     def tearDownClass(cls):
+        """Delete used files."""
         os.remove("dumped.txt")
 
     def test_dumps(self):
+        """Check that AbstractSerializer cannot dump objects."""
         obj = {"a": "a", "b": "b"}
 
         with self.assertRaises(NotImplementedError):
@@ -44,6 +54,7 @@ class TestAbstractSerializer(unittest.TestCase):
             self.serializer.dump(obj, file)
 
     def test_loads(self):
+        """Check that AbstractSerializer cannot load objects."""
         with self.assertRaises(NotImplementedError):
             self.serializer.loads("")
 
@@ -55,19 +66,25 @@ c = 42
 
 
 def main_test_function(x):
+    """Do some test actions. Use a global variable and an imported function."""
     a = 123
 
     return sin(x * a * c)
 
 
 class SimpleClass:
+    """A simple class to serialize."""
+
     def __init__(self, x, y, z):
+        """Create some simple members."""
         self.x = x
         self.y = y
         self.z = z
 
 
 class NotSoSimpleWithMethods:
+    """A complex class to serialize. Contains methods, variables and references to global functions and classes."""
+
     prop_1 = 66
     prop_2 = 77
     prop_3 = 88
