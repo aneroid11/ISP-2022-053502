@@ -1,6 +1,6 @@
+import inspect
 import types
 import typing
-import inspect
 
 
 def object_of_elementary_type(obj) -> bool:

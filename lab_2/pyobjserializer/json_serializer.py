@@ -1,9 +1,7 @@
-from .abstract_serializer import (
-    AbstractSerializer,
-    dumps_using_dumps_elementary,
-    loads_using_loads_elementary,
-)
 from . import my_json as json
+from .abstract_serializer import (AbstractSerializer,
+                                  dumps_using_dumps_elementary,
+                                  loads_using_loads_elementary)
 
 
 def json_dumps_elementary(elem_obj: object):
