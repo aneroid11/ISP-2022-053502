@@ -1,3 +1,4 @@
+import types
 from typing import TextIO
 
 from . import converter
@@ -24,13 +25,11 @@ def dumps_using_dumps_elementary(obj: object, dumps_elementary) -> str:
     if converter.object_of_elementary_type(obj):
         dumped = dumps_elementary(obj)
     else:
-        tp = str(obj.__class__)
-
-        if tp == "<class 'type'>":
+        if isinstance(obj, type):
             dumped = dumps_elementary(converter.prepare_class(obj))
-        elif tp == "<class 'function'>":
+        elif isinstance(obj, types.FunctionType):
             dumped = dumps_elementary(converter.prepare_func(obj))
-        elif tp == "<class 'builtin_function_or_method'>":
+        elif isinstance(obj, types.BuiltinFunctionType):
             dumped = dumps_elementary(converter.prepare_builtin_func(obj))
         else:
             # it is an object of some user class

@@ -1,24 +1,23 @@
 import inspect
 import types
-import typing
+from typing import Dict, Tuple, Any
 
 
 def object_of_elementary_type(obj) -> bool:
     is_elem = (
-        isinstance(obj, dict)
-        or isinstance(obj, list)
-        or isinstance(obj, str)
-        or isinstance(obj, int)
-        or isinstance(obj, float)
-        or isinstance(obj, bool)
-        or isinstance(obj, tuple)
-        or obj is None
+            isinstance(obj, dict)
+            or isinstance(obj, list)
+            or isinstance(obj, str)
+            or isinstance(obj, int)
+            or isinstance(obj, float)
+            or isinstance(obj, bool)
+            or isinstance(obj, tuple)
+            or obj is None
     )
     return is_elem
 
 
-def prepare_class(cls: object) -> dict:
-    # info_dict = {"py/type": cls.__module__ + "." + cls.__name__, "members": {}}
+def prepare_class(cls: type) -> dict:
     info_dict = {"py/type": cls.__name__, "members": {}}
 
     cls_dict = dict(cls.__dict__)
@@ -74,15 +73,15 @@ def load_class_from_info_dict(info_dict: dict, globs: dict) -> object:
     return ret_class
 
 
-def prepare_object(obj: object) -> dict:
-    obj_info_dict = {"py/object": obj.__module__ + "." + type(obj).__name__}
+def prepare_object(obj: object) -> Dict[str, Any]:
+    obj_info_dict: Dict[str, Any] = {"py/object": obj.__module__ + "." + type(obj).__name__}
 
     all_members = inspect.getmembers(obj)
     member_list = list(
         filter(lambda member: not member[0].startswith("__"), all_members)
     )
 
-    member_dict = {}
+    member_dict = dict()
 
     for mem in member_list:
         value = mem[1]
@@ -127,7 +126,7 @@ def load_object_from_info_dict(info_dict: dict, globs: dict) -> object:
     return ret_object
 
 
-def prepare_func(func) -> dict:
+def prepare_func(func: types.FunctionType) -> dict:
     func_info_dict = {"py/function": func.__module__ + "." + func.__name__}
 
     func_globs = get_func_globals(func)
@@ -154,10 +153,14 @@ def prepare_func(func) -> dict:
     return func_info_dict
 
 
-def prepare_builtin_func(builtin_func: object) -> dict:
+def prepare_builtin_func(builtin_func: types.BuiltinFunctionType) -> dict:
     func_name = builtin_func.__name__
-    module_name = builtin_func.__self__.__name__
-    func_info_dict = {"py/builtin_function": func_name, "module": module_name}
+    module = builtin_func.__self__
+
+    if not isinstance(module, types.ModuleType):
+        raise TypeError("builtin_func.__self__ is not a module")
+
+    func_info_dict = {"py/builtin_function": func_name, "module": module.__name__}
     return func_info_dict
 
 
@@ -248,7 +251,7 @@ def load_func_from_info_dict(info_dict: dict, globs: dict) -> types.FunctionType
     return func
 
 
-def load_func_globals(info: dict, globs: dict) -> typing.Tuple[dict, list]:
+def load_func_globals(info: dict, globs: dict) -> Tuple[dict, list]:
     if "__globals__" not in info:
         return globals().copy(), []
 

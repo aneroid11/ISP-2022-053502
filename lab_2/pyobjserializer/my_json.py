@@ -1,3 +1,5 @@
+import typing
+
 from . import converter
 
 
@@ -97,6 +99,8 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
 
 
 def str_to_num(string: str):
+    ret_num: typing.Union[int, float]
+
     try:
         ret_num = int(string)
     except ValueError:
