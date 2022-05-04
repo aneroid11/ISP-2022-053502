@@ -1,14 +1,15 @@
-import unittest
-import os
 import json
+import os
+import unittest
 from math import sin
-from pyobjserializer.my_json import dumps, loads
+
 import loading_tests
 from pyobjserializer import abstract_serializer
-from pyobjserializer.json_serializer import JSONSerializer
-from pyobjserializer.yaml_serializer import YAMLSerializer
-from pyobjserializer.toml_serializer import TOMLSerializer
 from pyobjserializer.create_serializer import create_serializer
+from pyobjserializer.json_serializer import JSONSerializer
+from pyobjserializer.my_json import dumps, loads
+from pyobjserializer.toml_serializer import TOMLSerializer
+from pyobjserializer.yaml_serializer import YAMLSerializer
 
 
 class TestCreateSerializer(unittest.TestCase):

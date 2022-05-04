@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
-from sys import exit
 from argparse import ArgumentParser
 from configparser import ConfigParser
+from sys import exit
+
 from pyobjserializer.create_serializer import create_serializer
 
 
