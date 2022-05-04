@@ -1,9 +1,12 @@
+"""A module to serialize elementary objects to JSON."""
+
 import typing
 
 from . import converter
 
 
 def is_not_collection(obj: object) -> bool:
+    """Check if obj is not a dict, a list or a tuple."""
     return (
         not isinstance(obj, dict)
         and not isinstance(obj, list)
@@ -12,6 +15,7 @@ def is_not_collection(obj: object) -> bool:
 
 
 def dumps(obj: object) -> str:
+    """Convert obj to JSON."""
     if is_not_collection(obj):
         if obj is None:
             return "null"
@@ -57,8 +61,7 @@ def dumps(obj: object) -> str:
 
 
 def count_backslashes_before_char(string: str, index: int) -> int:
-    # index is the index of the character. for example:
-    # "he\\", the index of the second " is 5
+    """Count consecutive backslashes before string[index]."""
     num_backslashes = 0
     i = index - 1
 
@@ -73,6 +76,7 @@ def count_backslashes_before_char(string: str, index: int) -> int:
 
 
 def delete_whitespaces_outside_of_strings(string: str) -> str:
+    """Remove all tabs, spaces and newlines in a JSON string, except for text in quotations."""
     ret_str = ""
     length = len(string)
     inside_of_quotations = False
@@ -99,6 +103,7 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
 
 
 def str_to_num(string: str):
+    """Convert a string to a number."""
     ret_num: typing.Union[int, float]
 
     try:
@@ -110,6 +115,12 @@ def str_to_num(string: str):
 
 
 def split_str_into_elems_by(list_str: str, separator: str) -> list:
+    """
+    Split list_str into strings by the given separator.
+
+    Ignore separators that are inside quotations, brackets or braces.
+    For example: "abc,[abc,abc]" is separated to "abc" and "[abc,abc]".
+    """
     list_str += " "
     curr_elem_str = ""
     ret_list = []
@@ -150,6 +161,7 @@ def split_str_into_elems_by(list_str: str, separator: str) -> list:
 
 
 def loads_list(list_str: str) -> object:
+    """Construct a list from a JSON string."""
     if len(list_str) == 0:
         return []
 
@@ -163,6 +175,7 @@ def loads_list(list_str: str) -> object:
 
 
 def loads_dict(dict_str: str) -> object:
+    """Construct a dict from a JSON string."""
     if len(dict_str) == 0:
         return {}
 
@@ -179,6 +192,11 @@ def loads_dict(dict_str: str) -> object:
 
 
 def loads_from_prepared_string(string: str) -> object:
+    """
+    Construct an object from the given string.
+
+    The string must be prepared using delete_whitespaces_outside_of_strings().
+    """
     length = len(string)
 
     if string[0] == '"' and string[length - 1] == '"':
@@ -205,6 +223,6 @@ def loads_from_prepared_string(string: str) -> object:
 
 
 def loads(string: str) -> object:
+    """Load an object from a JSON string."""
     string = delete_whitespaces_outside_of_strings(string)
-    # print(string)
     return loads_from_prepared_string(string)
