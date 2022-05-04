@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""
+A console utility to convert Python objects from one format to another.
+
+Supported formats: JSON, YAML, TOML.
+"""
 
 from argparse import ArgumentParser
 from configparser import ConfigParser
@@ -8,6 +13,7 @@ from pyobjserializer.create_serializer import create_serializer
 
 
 def convert_file(input_file_name: str, initial_format: str, output_format: str):
+    """Convert a serialized Python object from initial_format to output_format."""
     if initial_format == output_format:
         return None
 
@@ -29,6 +35,7 @@ def convert_file(input_file_name: str, initial_format: str, output_format: str):
 
 
 def main():
+    """Entry point for the utility."""
     parser = ArgumentParser()
     parser.add_argument("-i", "--input", help="input file (without the extension)")
     parser.add_argument("--initial-format", help="input file format")
