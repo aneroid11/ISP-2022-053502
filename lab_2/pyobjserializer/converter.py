@@ -1,23 +1,22 @@
+"""A module containing functions to convert complex objects to dicts containing only elementary types and back."""
+
 import inspect
 import types
 from typing import Any, Dict, Tuple, Union
 
 
 def object_of_elementary_type(obj) -> bool:
-    is_elem = (
-        isinstance(obj, dict)
-        or isinstance(obj, list)
-        or isinstance(obj, str)
-        or isinstance(obj, int)
-        or isinstance(obj, float)
-        or isinstance(obj, bool)
-        or isinstance(obj, tuple)
-        or obj is None
-    )
+    """
+    Check if obj is an object of elementary type.
+
+    Elementary types are: dict, list, str, int, float, bool, tuple or None.
+    """
+    is_elem = (isinstance(obj, (dict, list, str, int, float, bool, tuple)) or obj is None)
     return is_elem
 
 
 def prepare_class(cls: type) -> dict:
+    """Convert class to a dict."""
     info_dict: Dict[str, Any] = {"py/type": cls.__name__, "members": {}}
 
     cls_dict = dict(cls.__dict__)
@@ -50,6 +49,7 @@ def prepare_class(cls: type) -> dict:
 
 
 def load_class_from_info_dict(info_dict: dict, globs: Union[dict, None]) -> object:
+    """Construct a class from info_dict. Optionally update globals using globs."""
     name = info_dict["py/type"]
     members = info_dict["members"]
 
@@ -74,6 +74,7 @@ def load_class_from_info_dict(info_dict: dict, globs: Union[dict, None]) -> obje
 
 
 def prepare_object(obj: object) -> Dict[str, Any]:
+    """Convert an object of a user class to a dict."""
     obj_info_dict: Dict[str, Any] = {
         "py/object": obj.__module__ + "." + type(obj).__name__
     }
@@ -103,10 +104,13 @@ def prepare_object(obj: object) -> Dict[str, Any]:
 
 
 class Empty:
+    """Empty class used only to construct objects."""
+
     pass
 
 
 def load_object_from_info_dict(info_dict: dict, globs: Union[dict, None]) -> object:
+    """Construct an object using info_dict. Optionally update globals using globs."""
     members = info_dict["members"]
     ret_object = Empty()
 
@@ -129,6 +133,7 @@ def load_object_from_info_dict(info_dict: dict, globs: Union[dict, None]) -> obj
 
 
 def prepare_func(func: types.FunctionType) -> dict:
+    """Convert a function to a dict."""
     func_info_dict: Dict[str, Any] = {
         "py/function": func.__module__ + "." + func.__name__
     }
@@ -158,6 +163,11 @@ def prepare_func(func: types.FunctionType) -> dict:
 
 
 def prepare_builtin_func(builtin_func: types.BuiltinFunctionType) -> dict:
+    """
+    Convert a builtin function to a dict.
+
+    This is used for functions imported from some modules, e.g. sin(), cos() etc.
+    """
     func_name = builtin_func.__name__
     module = builtin_func.__self__
 
@@ -169,6 +179,7 @@ def prepare_builtin_func(builtin_func: types.BuiltinFunctionType) -> dict:
 
 
 def load_builtin_func_from_info_dict(info_dict: dict) -> types.BuiltinFunctionType:
+    """Construct a builtin function using info_dict."""
     loaded_func = __import__(info_dict["module"]).__getattribute__(
         info_dict["py/builtin_function"]
     )
@@ -176,6 +187,7 @@ def load_builtin_func_from_info_dict(info_dict: dict) -> types.BuiltinFunctionTy
 
 
 def get_func_globals(func: types.FunctionType) -> dict:
+    """Retrieve the globals that need to be stored with the function."""
     func_globs = func.__globals__
     needed_globs = func.__code__.co_names
     ret_globs = {}
@@ -188,6 +200,7 @@ def get_func_globals(func: types.FunctionType) -> dict:
 
 
 def get_func_code_info(member_list: list) -> dict:
+    """Convert a list of func.__code__ members into a dictionary that can be stored."""
     code_info = {}
     length = len(member_list)
 
@@ -210,6 +223,7 @@ def get_func_code_info(member_list: list) -> dict:
 def load_func_from_info_dict(
     info_dict: dict, globs: Union[dict, None]
 ) -> types.FunctionType:
+    """Construct a function using info_dict. Optionally update function globals using globs."""
     func_info = {}
     keys = info_dict["__code__"].keys()
     func_info["py/function"] = info_dict["py/function"]
@@ -258,6 +272,7 @@ def load_func_from_info_dict(
 
 
 def load_func_globals(info: dict, globs: Union[dict, None]) -> Tuple[dict, list]:
+    """Retrieve the function globals from the function info dict and the globals that can be updated."""
     if "__globals__" not in info:
         return globals().copy(), []
 
@@ -290,6 +305,7 @@ def load_func_globals(info: dict, globs: Union[dict, None]) -> Tuple[dict, list]
 
 
 def tuple_to_list_recursive(tpl: tuple) -> list:
+    """Get a tuple and convert it (and all the tuples inside this tuple) to a list."""
     size = len(tpl)
     ret_list = list(tpl)
 
@@ -301,6 +317,7 @@ def tuple_to_list_recursive(tpl: tuple) -> list:
 
 
 def list_to_tuple_recursive(lst: list) -> tuple:
+    """Get a list and convert it (and all the lists inside this list) to a tuple."""
     size = len(lst)
 
     for i in range(size):
