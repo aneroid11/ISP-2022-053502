@@ -4,4 +4,6 @@ __pycache__
 Dockerfile
 serialized_object.*
 .coverage
-
+build
+*.egg-info
+config.ini
