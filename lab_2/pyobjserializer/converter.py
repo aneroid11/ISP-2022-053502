@@ -11,7 +11,7 @@ def object_of_elementary_type(obj) -> bool:
 
     Elementary types are: dict, list, str, int, float, bool, tuple or None.
     """
-    is_elem = (isinstance(obj, (dict, list, str, int, float, bool, tuple)) or obj is None)
+    is_elem = isinstance(obj, (dict, list, str, int, float, bool, tuple)) or obj is None
     return is_elem
 
 

@@ -201,7 +201,7 @@ def loads_from_prepared_string(string: str) -> object:
 
     if string[0] == '"' and string[length - 1] == '"':
         # it is a string
-        decoded_string = bytes(string[1: length - 1], "utf-8").decode("unicode_escape")
+        decoded_string = bytes(string[1 : length - 1], "utf-8").decode("unicode_escape")
         return decoded_string
     elif string[0].isdigit():
         # it is a number (int or float)
@@ -214,10 +214,10 @@ def loads_from_prepared_string(string: str) -> object:
         return False
     elif string[0] == "[":
         # it is a list
-        return loads_list(string[1: length - 1])
+        return loads_list(string[1 : length - 1])
     elif string[0] == "{":
         # it is a dict
-        return loads_dict(string[1: length - 1])
+        return loads_dict(string[1 : length - 1])
 
     return None
 
