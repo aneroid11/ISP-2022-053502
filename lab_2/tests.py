@@ -106,7 +106,7 @@ class TestSerializers(unittest.TestCase):
     """A class to check if serializers are working properly."""
 
     def test_dump_load_objects(self):
-        """Dump some objects, load them and compare initial version with the decoded."""
+        """Dump test objects, load them and compare initial version with the decoded."""
         serializer_names = ["json", "yaml", "toml"]
 
         objects_with_check_methods = [
