@@ -4,9 +4,16 @@ import inspect
 
 
 def object_of_elementary_type(obj) -> bool:
-    is_elem = isinstance(obj, dict) or isinstance(obj, list) or isinstance(obj, str) or \
-              isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, bool) or \
-              isinstance(obj, tuple) or obj is None
+    is_elem = (
+        isinstance(obj, dict)
+        or isinstance(obj, list)
+        or isinstance(obj, str)
+        or isinstance(obj, int)
+        or isinstance(obj, float)
+        or isinstance(obj, bool)
+        or isinstance(obj, tuple)
+        or obj is None
+    )
     return is_elem
 
 
@@ -62,9 +69,7 @@ def load_class_from_info_dict(info_dict: dict, globs: dict) -> object:
 
         members[mem_name] = current_member
 
-    ret_class = type(name,
-                     (object, ),
-                     members)
+    ret_class = type(name, (object,), members)
 
     return ret_class
 
@@ -73,7 +78,9 @@ def prepare_object(obj: object) -> dict:
     obj_info_dict = {"py/object": obj.__module__ + "." + type(obj).__name__}
 
     all_members = inspect.getmembers(obj)
-    member_list = list(filter(lambda member: not member[0].startswith("__"), all_members))
+    member_list = list(
+        filter(lambda member: not member[0].startswith("__"), all_members)
+    )
 
     member_dict = {}
 
@@ -155,7 +162,9 @@ def prepare_builtin_func(builtin_func: object) -> dict:
 
 
 def load_builtin_func_from_info_dict(info_dict: dict) -> types.BuiltinFunctionType:
-    loaded_func = __import__(info_dict["module"]).__getattribute__(info_dict["py/builtin_function"])
+    loaded_func = __import__(info_dict["module"]).__getattribute__(
+        info_dict["py/builtin_function"]
+    )
     return loaded_func
 
 
@@ -209,22 +218,24 @@ def load_func_from_info_dict(info_dict: dict, globs: dict) -> types.FunctionType
 
         func_info["__code__"][key] = value
 
-    func_code = types.CodeType(func_info["__code__"]["co_argcount"],
-                               func_info["__code__"]["co_posonlyargcount"],
-                               func_info["__code__"]["co_kwonlyargcount"],
-                               func_info["__code__"]["co_nlocals"],
-                               func_info["__code__"]["co_stacksize"],
-                               func_info["__code__"]["co_flags"],
-                               func_info["__code__"]["co_code"],
-                               func_info["__code__"]["co_consts"],
-                               func_info["__code__"]["co_names"],
-                               func_info["__code__"]["co_varnames"],
-                               func_info["__code__"]["co_filename"],
-                               func_info["__code__"]["co_name"],
-                               func_info["__code__"]["co_firstlineno"],
-                               func_info["__code__"]["co_lnotab"],
-                               func_info["__code__"]["co_freevars"],
-                               func_info["__code__"]["co_cellvars"])
+    func_code = types.CodeType(
+        func_info["__code__"]["co_argcount"],
+        func_info["__code__"]["co_posonlyargcount"],
+        func_info["__code__"]["co_kwonlyargcount"],
+        func_info["__code__"]["co_nlocals"],
+        func_info["__code__"]["co_stacksize"],
+        func_info["__code__"]["co_flags"],
+        func_info["__code__"]["co_code"],
+        func_info["__code__"]["co_consts"],
+        func_info["__code__"]["co_names"],
+        func_info["__code__"]["co_varnames"],
+        func_info["__code__"]["co_filename"],
+        func_info["__code__"]["co_name"],
+        func_info["__code__"]["co_firstlineno"],
+        func_info["__code__"]["co_lnotab"],
+        func_info["__code__"]["co_freevars"],
+        func_info["__code__"]["co_cellvars"],
+    )
 
     func_globs, updatable_globs_names = load_func_globals(info_dict, globs)
     func = types.FunctionType(func_code, func_globs)

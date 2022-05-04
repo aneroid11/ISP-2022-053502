@@ -59,9 +59,13 @@ def main():
         output_format_name = args.output_format
 
     convert_file(input_file_name, initial_format_name, output_format_name)
-    print("converted", input_file_name + "." + initial_format_name,
-          "to", input_file_name + "." + output_format_name)
+    print(
+        "converted",
+        input_file_name + "." + initial_format_name,
+        "to",
+        input_file_name + "." + output_format_name,
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

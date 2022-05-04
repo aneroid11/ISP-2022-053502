@@ -8,7 +8,7 @@ def create_serializer(format_name: str) -> AbstractSerializer:
     serializer_types = {
         "json": JSONSerializer,
         "yaml": YAMLSerializer,
-        "toml": TOMLSerializer
+        "toml": TOMLSerializer,
     }
     if format_name in serializer_types:
         return serializer_types[format_name]()

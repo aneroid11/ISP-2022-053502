@@ -1,5 +1,8 @@
-from .abstract_serializer import \
-    AbstractSerializer, dumps_using_dumps_elementary, loads_using_loads_elementary
+from .abstract_serializer import (
+    AbstractSerializer,
+    dumps_using_dumps_elementary,
+    loads_using_loads_elementary,
+)
 from . import my_json as json
 
 

@@ -19,8 +19,7 @@ class AbstractSerializer:
         return self.loads(data_string, globs)
 
 
-def dumps_using_dumps_elementary(obj: object,
-                                 dumps_elementary) -> str:
+def dumps_using_dumps_elementary(obj: object, dumps_elementary) -> str:
     if converter.object_of_elementary_type(obj):
         dumped = dumps_elementary(obj)
     else:
@@ -39,9 +38,9 @@ def dumps_using_dumps_elementary(obj: object,
     return dumped
 
 
-def loads_using_loads_elementary(string: str,
-                                 loads_elementary,
-                                 globs: dict = None) -> object:
+def loads_using_loads_elementary(
+    string: str, loads_elementary, globs: dict = None
+) -> object:
     decoded_object = loads_elementary(string)
     globs_passed = None if globs is None else globs.copy()
 

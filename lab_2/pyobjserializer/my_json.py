@@ -2,35 +2,38 @@ from . import converter
 
 
 def is_not_collection(obj: object) -> bool:
-    return not isinstance(obj, dict) and not isinstance(obj, list) and \
-           not isinstance(obj, tuple)
+    return (
+        not isinstance(obj, dict)
+        and not isinstance(obj, list)
+        and not isinstance(obj, tuple)
+    )
 
 
 def dumps(obj: object) -> str:
     if is_not_collection(obj):
         if obj is None:
-            return 'null'
+            return "null"
         if isinstance(obj, bool):
             if obj:
-                return 'true'
-            return 'false'
+                return "true"
+            return "false"
         if isinstance(obj, str):
             return f'"{obj}"'
         if isinstance(obj, int) or isinstance(obj, float):
-            return f'{obj}'
+            return f"{obj}"
 
     if isinstance(obj, tuple):
         obj = converter.tuple_to_list_recursive(obj)
     if isinstance(obj, list):
-        str_to_return = '['
+        str_to_return = "["
 
         size = len(obj)
         for i in range(size):
             str_to_return += dumps(obj[i])
             if i != size - 1:
-                str_to_return += ', '
+                str_to_return += ", "
 
-        str_to_return += ']'
+        str_to_return += "]"
         return str_to_return
     if isinstance(obj, dict):
         str_to_return = "{"
@@ -87,7 +90,7 @@ def delete_whitespaces_outside_of_strings(string: str) -> str:
         elif inside_of_quotations:
             ret_str += string[i]
         elif not inside_of_quotations:
-            if string[i] != ' ' and string[i] != '\t' and string[i] != '\n':
+            if string[i] != " " and string[i] != "\t" and string[i] != "\n":
                 ret_str += string[i]
 
     return ret_str
@@ -127,8 +130,12 @@ def split_str_into_elems_by(list_str: str, separator: str) -> list:
                 else:
                     quotations_not_closed -= 1
 
-        if (list_str[i] == separator and brackets_not_closed == 0 and quotations_not_closed == 0
-                and braces_not_closed == 0) or i == list_str_len - 1:
+        if (
+            list_str[i] == separator
+            and brackets_not_closed == 0
+            and quotations_not_closed == 0
+            and braces_not_closed == 0
+        ) or i == list_str_len - 1:
             ret_list.append(curr_elem_str)
             curr_elem_str = ""
             continue
@@ -172,7 +179,7 @@ def loads_from_prepared_string(string: str) -> object:
 
     if string[0] == '"' and string[length - 1] == '"':
         # it is a string
-        decoded_string = bytes(string[1: length - 1], "utf-8").decode("unicode_escape")
+        decoded_string = bytes(string[1 : length - 1], "utf-8").decode("unicode_escape")
         return decoded_string
     elif string[0].isdigit():
         # it is a number (int or float)
@@ -185,10 +192,10 @@ def loads_from_prepared_string(string: str) -> object:
         return False
     elif string[0] == "[":
         # it is a list
-        return loads_list(string[1: length - 1])
+        return loads_list(string[1 : length - 1])
     elif string[0] == "{":
         # it is a dict
-        return loads_dict(string[1: length - 1])
+        return loads_dict(string[1 : length - 1])
 
     return None
 
