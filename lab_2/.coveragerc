@@ -1,0 +1,5 @@
+[coverage:run]
+omit =
+    pyobjserializer/__init__.py
+    tests.py
+    loading_tests.py

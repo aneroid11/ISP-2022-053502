@@ -1,6 +1,7 @@
 """Contains functions calculating and showing text statistics."""
 
 import re
+from typing import Tuple
 
 import median
 
@@ -63,7 +64,7 @@ def median_words_in_sentence(text: str) -> float:
     return median.get_median(words_amounts)
 
 
-def get_next_n_gram(text: str, index: int, n: int) -> (str, int, bool):
+def get_next_n_gram(text: str, index: int, n: int) -> Tuple[str, int, bool]:
     """Get the next N-gram from text.
 
     Find and return the next N-gram starting from index. Return:
